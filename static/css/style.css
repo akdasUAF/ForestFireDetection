@@ -1,0 +1,13 @@
+#displayImg{
+    width: 224px;
+    height: 224px;
+    border: 1px solid black;
+    background-position: center;
+    background-size: cover;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+body{
+    text-align: center;
+}
