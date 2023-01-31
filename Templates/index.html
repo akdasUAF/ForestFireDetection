@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>VGG16 Test</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+
+    <body>
+        <h1 class="text-center">Image Classifier</h1>
+
+        <form class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
+            <input id="imageInput" class="form-control" type="file" name="imageFile">
+            <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
+        </form>
+
+        <div id="displayImg"></div>
+
+        {% if prediction %}
+            <img src=>
+            <p class="text-center">Image is a {{prediction}}</p>
+        {% endif %}
+
+        <script src="{{ url_for('static', filename='javascript/showImage.js') }}"></script>
+    </body>
+</html>
