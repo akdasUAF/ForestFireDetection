@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
-import tensorflow as tf
+
+from PIL import Image
 
 from keras.utils import load_img
 from keras.utils import img_to_array
@@ -19,6 +20,10 @@ def predict():
     imageFile = request.files['imageFile']
     image_path = "./images/" + imageFile.filename
     imageFile.save(image_path)
+    img = Image.open(image_path)
+
+    width = img.width
+    height = img.height
 
     userImage = load_img(image_path, target_size=(224,224))
     userImage = img_to_array(userImage)
@@ -30,7 +35,7 @@ def predict():
 
     classification = '%s (%.2f%%)' % (label[1], label[2]*100)
 
-    return render_template("index.html", prediction = classification)
+    return render_template("index.html", prediction = classification, width = width, height = height)
 
 
 if __name__ == '__main__':
