@@ -18,6 +18,7 @@
         {% if prediction %}
             <img src=>
             <p class="text-center">Image is a {{prediction}}</p>
+            <p class="text-center">Origional dimensions of the image are {{width}}px x {{height}}px scaled down to 224px x 224px</p>
         {% endif %}
 
         <script src="{{ url_for('static', filename='javascript/showImage.js') }}"></script>
