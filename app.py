@@ -19,7 +19,7 @@ def hello_world():
 @app.route('/', methods = ['POST'])
 def predict():
     imageFile = request.files['imageFile']
-    image_path = "./images/" + imageFile.filename
+    image_path = "static/images/" + imageFile.filename
     imageFile.save(image_path)
     # Grab Image
     img = Image.open(image_path)
