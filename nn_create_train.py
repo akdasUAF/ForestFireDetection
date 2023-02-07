@@ -9,10 +9,26 @@ from matplotlib import pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 import sys
+import os
 
 
-def import_dataset():
-    return tf.keras.datasets.mnist.load_data()
+def import_dataset(image_size):
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
+        seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='training'
+        )
+
+    validation_ds = tf.keras.utils.image_dataset_from_directory(
+        './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'],
+        seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='validation'
+        )
+
+    test_ds = tf.keras.utils.image_dataset_from_directory(
+        './Test/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
+        seed=123, shuffle=True, image_size=image_size
+        )
+
+    return train_ds, validation_ds, test_ds
 
 
 def reshape(data):
@@ -50,49 +66,52 @@ def visualize(data, label, title):
 def create_model(input_shape):
     # Creating a Sequential Model and adding the layers
     model = Sequential()
-    model.add(Conv2D(28, kernel_size=(3,3), input_shape=input_shape))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Conv2D(2, 3, input_shape=input_shape))
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
     model.add(Dense(128, activation=tf.nn.relu))
     model.add(Dropout(0.2))
     model.add(Dense(10,activation=tf.nn.softmax))
 
+    model.build()
     model.summary()
     return model
 
 
-def train(model, x_train, y_train):
+def train(model, train_ds, validation_ds):
     model.compile(optimizer='adam', 
                 loss='sparse_categorical_crossentropy', 
                 metrics=['accuracy'])
-    model.fit(x=x_train,y=y_train, epochs=10)
+    model.fit(x=train_ds, validation_data=validation_ds, epochs=2)
     return model
 
 
-def evaluate(model, x_test, y_test):
-    model.evaluate(x_test, y_test)
+def evaluate(model, dataset):
+    model.evaluate(x=dataset)
 
 
 def main():
+    image_size = (254, 254)
+
     # get the data
-    (x_train, y_train), (x_test, y_test) = import_dataset()
+    train_ds, validation_ds, test_ds = import_dataset(image_size)
 
     # reshape/preprocess
-    x_train = reshape(x_train)
-    x_test = reshape(x_test)
+    # x_train = reshape(x_train)
+    # x_test = reshape(x_test)
 
     # visualize the data
-    visualize(x_train, 'x_train', "Sample Training Data")
-    visualize(x_test, 'x_test', "Sample Test Data")
+    # visualize(x_train, 'x_train', "Sample Training Data")
+    # visualize(x_test, 'x_test', "Sample Test Data")
 
     # check GPU availability
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
-    model = create_model((28, 28, 1))
+    model = create_model(image_size + (3, ))
 
-    model = train(model, x_train, y_train)
+    model = train(model, train_ds, validation_ds)
 
-    evaluate(model, x_test, y_test)
+    evaluate(model, test_ds)
 
     return 0
 
