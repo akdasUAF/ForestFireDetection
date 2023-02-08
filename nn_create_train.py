@@ -71,7 +71,7 @@ def create_model(input_shape):
     model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
     model.add(Dense(128, activation=tf.nn.relu))
     model.add(Dropout(0.2))
-    model.add(Dense(10,activation=tf.nn.softmax))
+    model.add(Dense(1,activation='sigmoid'))
 
     model.build()
     model.summary()
@@ -80,7 +80,7 @@ def create_model(input_shape):
 
 def train(model, train_ds, validation_ds):
     model.compile(optimizer='adam', 
-                loss='sparse_categorical_crossentropy', 
+                loss='binary_crossentropy', 
                 metrics=['accuracy'])
     model.fit(x=train_ds, validation_data=validation_ds, epochs=2)
     return model
@@ -95,14 +95,6 @@ def main():
 
     # get the data
     train_ds, validation_ds, test_ds = import_dataset(image_size)
-
-    # reshape/preprocess
-    # x_train = reshape(x_train)
-    # x_test = reshape(x_test)
-
-    # visualize the data
-    # visualize(x_train, 'x_train', "Sample Training Data")
-    # visualize(x_test, 'x_test', "Sample Test Data")
 
     # check GPU availability
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
