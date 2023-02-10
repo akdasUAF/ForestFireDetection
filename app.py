@@ -7,10 +7,8 @@ from keras.utils import load_img
 from keras.utils import img_to_array
 from keras.applications.vgg16 import preprocess_input
 from keras.applications.vgg16 import decode_predictions
-from keras.applications.vgg16 import VGG16
 
 app = Flask(__name__)
-model = VGG16()
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -33,8 +31,6 @@ def predict():
     userImage = img_to_array(userImage)
     userImage = userImage.reshape((1, userImage.shape[0], userImage.shape[1], userImage.shape[2]))
     userImage = preprocess_input(userImage)
-    yhat = model.predict(userImage)
-    label = decode_predictions(yhat)
     label = label[0][0]
 
     classification = '%s (%.2f%%)' % (label[1], label[2]*100)
