@@ -8,7 +8,7 @@ The aim of this project is to create Fire detection NN model with Flask and Tens
 - TensorFlow >=1.0
 - Flask
 
-# How to dependecies install 
+# How to install dependecies
  $python -m pip install -r requirements.txt
 
 # How to run
