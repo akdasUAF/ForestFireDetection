@@ -13,12 +13,12 @@
             <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
         </form>
 
-        <div id="displayImg"></div>
-
         {% if prediction %}
-            <img src=>
+            <img id="displayImg" src= "{{ url_for('static', filename='imagesToSendBack/circle.jpg') }}"></img>
             <p class="text-center">Image is a {{prediction}}</p>
             <p class="text-center">Origional dimensions of the image are {{width}}px x {{height}}px scaled down to 224px x 224px</p>
+        {% else %}
+            <img id="displayImg"></img>
         {% endif %}
 
         <script src="{{ url_for('static', filename='javascript/showImage.js') }}"></script>
