@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 
 # Import Python Imaging Library PIL(Pillow)
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from keras.utils import load_img
 from keras.utils import img_to_array
@@ -39,8 +39,15 @@ def predict():
 
     classification = '%s (%.2f%%)' % (label[1], label[2]*100)
 
+    # Draw the Circle and save as new image
+    offset = 100
+    position = [(width/2 - 2*offset, height/2 - 2*offset), (width/2 + offset, height/2 + offset)] # [(x0,y0), (x1,y1)]
+    draw = ImageDraw.Draw(img)
+    draw.arc(position, start=0, end=360, fill="red", width=10)
+    img.save("static/imagesToSendBack/circle.jpg")
+
     # Returning the main page to the user with variables to use on the front end
-    return render_template("index.html", prediction = classification, width = width, height = height)
+    return render_template("index.html", prediction = classification, width = width, height = height, img = img)
 
 
 if __name__ == '__main__':
