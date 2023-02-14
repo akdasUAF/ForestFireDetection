@@ -1,9 +1,8 @@
 __pycache__/
 
 /static/images
-/static/images
 /static/imagesToSendBack
 
 # exception to the rule
-!static/images/.gitkeep 
-!static/imagesToSendBack/.gitkeep
+!/static/images/.gitkeep 
+!/static/imagesToSendBack/.gitkeep
