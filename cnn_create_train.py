@@ -68,7 +68,7 @@ def main():
     model = train(model, train_ds, validation_ds)
 
     # save
-    save_model(model, './forest_fire_cnn')
+    model.save('forest_fire_cnn.h5')
 
     return 0
 
