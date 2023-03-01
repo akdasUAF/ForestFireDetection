@@ -1,16 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 # Import Python Imaging Library PIL(Pillow)
 from PIL import Image, ImageDraw
 
-from keras.utils import load_img
-from keras.utils import img_to_array
-from keras.applications.vgg16 import preprocess_input
-from keras.applications.vgg16 import decode_predictions
-from keras.applications.vgg16 import VGG16
+import tensorflow as tf
+import numpy as np
+import io
+from cnn_create_train import *
+from cnn_import_evaluate import *
 
 app = Flask(__name__)
-model = VGG16()
+image_size = (254, 254)
+model = cct.create_model(image_size + (3, ))
+# import
+model = import_model(model, 'forest_fire_cnn.h5')
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -18,9 +21,12 @@ def hello_world():
 
 @app.route('/', methods = ['POST'])
 def predict():
+    # Define a list of class labels
+    class_labels = ['No Fire', 'Fire']
     imageFile = request.files['imageFile']
     image_path = "static/images/" + imageFile.filename
     imageFile.save(image_path)
+
     # Grab Image
     img = Image.open(image_path)
 
@@ -28,26 +34,27 @@ def predict():
     width = img.width
     height = img.height
 
-    # Re-sizing the image to fit into the models input
-    userImage = load_img(image_path, target_size=(224,224))
-    userImage = img_to_array(userImage)
-    userImage = userImage.reshape((1, userImage.shape[0], userImage.shape[1], userImage.shape[2]))
-    userImage = preprocess_input(userImage)
-    yhat = model.predict(userImage)
-    label = decode_predictions(yhat)
-    label = label[0][0]
+    img = img.resize((254, 254))
+    img = np.array(img, dtype=np.float32)
 
-    classification = '%s (%.2f%%)' % (label[1], label[2]*100)
+    preds = model.predict(np.expand_dims(img, axis=0))[0]
 
-    # Draw the Circle and save as new image
-    offset = 100
-    position = [(width/2 - 2*offset, height/2 - 2*offset), (width/2 + offset, height/2 + offset)] # [(x0,y0), (x1,y1)]
-    draw = ImageDraw.Draw(img)
-    draw.arc(position, start=0, end=360, fill="red", width=10)
-    img.save("static/imagesToSendBack/circle.jpg")
+    # Print the predicted class probabilities
+    for i, pred in enumerate(preds):
+        class_label = class_labels[i]
+        print('{}: {:.3f}'.format(class_label, pred))   
+
+    class_idx = np.argmax(preds)
+
+    # Map the class index to a label
+    class_label = class_labels[class_idx]
+
+    # Print the predicted class label
+    print('Predicted class label: {}'.format(class_label))
+    print(preds)
 
     # Returning the main page to the user with variables to use on the front end
-    return render_template("index.html", prediction = classification, width = width, height = height, img = img)
+    return render_template("index.html", prediction = class_label, preds = preds, width = width, height = height)
 
 
 if __name__ == '__main__':

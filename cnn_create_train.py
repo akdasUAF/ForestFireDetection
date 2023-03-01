@@ -88,7 +88,7 @@ def main():
     cie.evaluate(model, test_ds)
 
     # save
-    save_model(model, './forest_fire_cnn')
+    model.save('forest_fire_cnn.h5')
 
     return 0
 

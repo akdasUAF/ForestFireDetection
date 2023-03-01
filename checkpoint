@@ -1,0 +1,2 @@
+model_checkpoint_path: "forest_fire_cnn"
+all_model_checkpoint_paths: "forest_fire_cnn"

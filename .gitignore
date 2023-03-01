@@ -2,6 +2,9 @@ __pycache__/
 
 /static/images
 /static/imagesToSendBack
+/Test
+/Training
+/local_testing
 
 # exception to the rule
 !/static/images/.gitkeep 

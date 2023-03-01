@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>VGG16 Test</title>
+        <title>CNN Model Test</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
 
@@ -10,12 +10,12 @@
 
         <form class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
             <input id="imageInput" class="form-control" type="file" name="imageFile">
-            <input class="btn btn-primary mt-3" type="submit" value="Predict Image">
+            <input class="btn btn-primary mt-3" type="submit" value="Check for Fire">
         </form>
 
         {% if prediction %}
             <img id="displayImg" src= "{{ url_for('static', filename='imagesToSendBack/circle.jpg') }}"></img>
-            <p class="text-center">Image is a {{prediction}}</p>
+            <p class="text-center">Image has {{prediction}} at {{preds}}</p>
             <p class="text-center">Origional dimensions of the image are {{width}}px x {{height}}px scaled down to 224px x 224px</p>
         {% else %}
             <img id="displayImg"></img>
