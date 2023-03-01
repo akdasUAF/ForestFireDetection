@@ -11,7 +11,7 @@ from cnn_import_evaluate import *
 
 app = Flask(__name__)
 image_size = (254, 254)
-model = cct.create_model(image_size + (3, ))
+model = create_model(image_size + (3, ))
 # import
 model = import_model(model, 'forest_fire_cnn.h5')
 
@@ -37,24 +37,19 @@ def predict():
     img = img.resize((254, 254))
     img = np.array(img, dtype=np.float32)
 
-    preds = model.predict(np.expand_dims(img, axis=0))[0]
+    pred = model.predict(np.expand_dims(img, axis=0))[0][0]
 
-    # Print the predicted class probabilities
-    for i, pred in enumerate(preds):
-        class_label = class_labels[i]
-        print('{}: {:.3f}'.format(class_label, pred))   
-
-    class_idx = np.argmax(preds)
+    class_idx = round(pred)
 
     # Map the class index to a label
     class_label = class_labels[class_idx]
 
     # Print the predicted class label
     print('Predicted class label: {}'.format(class_label))
-    print(preds)
+    print(pred)
 
     # Returning the main page to the user with variables to use on the front end
-    return render_template("index.html", prediction = class_label, preds = preds, width = width, height = height)
+    return render_template("index.html", prediction = class_label, preds = pred, width = width, height = height)
 
 
 if __name__ == '__main__':
