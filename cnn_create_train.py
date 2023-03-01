@@ -7,23 +7,40 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 import sys
+import cnn_import_evaluate as cie
 
 
 def import_dataset(image_size):
-    train_ds = tf.keras.utils.image_dataset_from_directory(
-        './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
-        seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='training'
-        )
+    # train_ds = tf.keras.utils.image_dataset_from_directory(
+    #     './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
+    #     seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='training'
+    #     )
 
-    validation_ds = tf.keras.utils.image_dataset_from_directory(
-        './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'],
-        seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='validation'
-        )
+    # validation_ds = tf.keras.utils.image_dataset_from_directory(
+    #     './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'],
+    #     seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='validation'
+    #     )
 
-    test_ds = tf.keras.utils.image_dataset_from_directory(
-        './Test/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
-        seed=123, shuffle=True, image_size=image_size
-        )
+    # test_ds = tf.keras.utils.image_dataset_from_directory(
+    #     './Test/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
+    #     seed=123, shuffle=True, image_size=image_size
+    #     )
+    
+
+    full_dataset = tf.keras.utils.image_dataset_from_directory(
+        './Combined/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
+        seed=123, shuffle=True, image_size=image_size)
+    
+    dataset_size = full_dataset.cardinality().numpy()
+    train_size = int(0.8 * dataset_size)
+    val_size = int(0.10 * dataset_size)
+    test_size = int(0.10 * dataset_size)
+
+    # full_dataset = full_dataset.shuffle(500)
+    train_ds = full_dataset.take(train_size)
+    test_ds = full_dataset.skip(train_size)
+    validation_ds = test_ds.skip(val_size)
+    test_ds = test_ds.take(test_size)
 
     return train_ds, validation_ds, test_ds
 
@@ -66,6 +83,9 @@ def main():
 
     # train
     model = train(model, train_ds, validation_ds)
+
+    # evaluate
+    cie.evaluate(model, test_ds)
 
     # save
     save_model(model, './forest_fire_cnn')
