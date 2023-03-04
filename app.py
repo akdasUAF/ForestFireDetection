@@ -13,7 +13,7 @@ app = Flask(__name__)
 image_size = (254, 254)
 model = create_model(image_size + (3, ))
 # import
-model = import_model(model, 'forest_fire_cnn.h5')
+model = import_model(model, f'Models\\weights\\forest_fire_cnn.h5')
 
 @app.route('/', methods = ['GET'])
 def hello_world():

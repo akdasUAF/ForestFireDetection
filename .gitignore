@@ -10,6 +10,7 @@ __pycache__/
 /No_Fire_Images
 /Fire_Images
 /Local_testing
+*.jpg
 
 # exception to the rule
 !/static/images/.gitkeep 

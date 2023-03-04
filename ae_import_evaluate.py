@@ -38,34 +38,40 @@ def main():
 
     # evaluate
     print("Performance on Non-Fire Training Data:")
-    evaluate(model, train_ds)
+    #evaluate(model, train_ds)
     print("Performance on Non-Fire Validation Data:")
-    evaluate(model, validation_ds)
+    #evaluate(model, validation_ds)
     print("Performance on Non-Fire Test Data:")
-    evaluate(model, test_ds)
+    #evaluate(model, test_ds)
     
     print("Performance on Fire Training Data:")
-    evaluate(model, fire_train_ds)
+    #evaluate(model, fire_train_ds)
     print("Performance on Fire Validation Data:")
-    evaluate(model, fire_val_ds)
+    #evaluate(model, fire_val_ds)
     print("Performance on Fire Test Data:")
-    evaluate(model, fire_test_ds)
+    #evaluate(model, fire_test_ds)
     
-    '''# test an image
-    img = cv2.imread('test_image.jpg')
-    img = cv2.resize(img, (254, 254))
-    img = np.expand_dims(img, axis=0)
-    # Generate a reconstruction of the input image using the autoencoder
-    reconstructed_img = model.predict(img)
-    # Calculate the mean squared error (MSE) between the original image and the reconstruction
-    mse = np.mean(np.square(img - reconstructed_img))
-    # Set a threshold for the MSE above which the image is considered to have an anomaly
+    # test a no_fire and fire image
+    fire_img = cv2.imread('resized_frame1.jpg')
+    no_fire_img = cv2.imread('lake_resized_lake_frame2.jpg')
+    fire_img = cv2.resize(fire_img, image_size)
+    no_fire_img = cv2.resize(no_fire_img, image_size)
+    fire_img = np.expand_dims(fire_img, axis=0)
+    no_fire_img = np.expand_dims(no_fire_img, axis=0)
+    
+    reconstructed_fire_img = model.predict(fire_img)
+    reconstructed_no_fire_img = model.predict(no_fire_img)
+
+    mse1 = np.mean(np.square(fire_img - reconstructed_fire_img))
+    print(mse1)
+    mse2 = np.mean(np.square(no_fire_img - reconstructed_no_fire_img))
+    print(mse2)
+
     threshold = 0.01
-    # Check if the MSE is above the threshold
-    if mse > threshold:
+    if mse1 > threshold:
         print('Anomaly detected in the image!')
     else:
-        print('No anomaly detected in the image.')'''
+        print('No anomaly detected in the image.')
 
 if __name__ == '__main__':
     sys.exit(main())
