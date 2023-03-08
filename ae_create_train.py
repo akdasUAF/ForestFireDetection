@@ -10,7 +10,7 @@ from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.image import ssim
 import sys
-import ae_import_evaluate as aeie
+#import ae_import_evaluate as aeie
 
 
 def import_no_fire_dataset(image_size):
@@ -88,13 +88,13 @@ def import_fire_dataset(image_size):
 def create_model(input_shape):
     # Define the encoder layers
     encoder = tf.keras.models.Sequential([
-        tf.keras.layers.Input(shape=input_shape),
-        tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'),
-        tf.keras.layers.Conv2D(filters=16, kernel_size=3, activation='relu', padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'),
-        tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same'),
-        tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same')
+        tf.keras.layers.Input(shape=input_shape, name='Input'),
+        tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv1'),
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool1'),
+        tf.keras.layers.Conv2D(filters=16, kernel_size=3, activation='relu', padding='same', name='Conv2'),
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool2'),
+        tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv3'),
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool3')
     ])
 
     # Define the decoder layers
@@ -109,8 +109,14 @@ def create_model(input_shape):
         tf.keras.layers.Conv2D(filters=3, kernel_size=3, activation='sigmoid', padding='valid')
     ])
 
+    '''tf.keras.layers.Conv2DTranspose(filters=8, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT1'),
+        tf.keras.layers.Conv2DTranspose(filters=16, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT2'),
+        tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT3'),
+        tf.keras.layers.Conv2DTranspose(filters=3, kernel_size=3, activation='sigmoid', padding='same', name='Output')
+        '''
+
     # Define the full autoencoder model
-    autoencoder = tf.keras.models.Sequential([encoder, decoder])
+    autoencoder = tf.keras.models.Sequential([encoder, decoder], name='Autoencoder')
     return autoencoder
 
 
@@ -135,13 +141,14 @@ def main():
     model = create_model(image_shape)
 
     model.build((None, ) + image_shape)
-    plot_model(model, to_file='Models\\architectures\\forest_fire_ae.png', show_shapes=True)
+    plot_dir = 'Models\\architectures\\forest_fire_ae.png'
+    plot_model(model, to_file=plot_dir, show_shapes=True)
 
     # define hyperparameters
     optimizer = 'adam'
     loss_function_name = 'ssim'
     loss_function = ssim_loss
-    epochs = 1
+    epochs = 2
     
     # train
     model.compile(optimizer=optimizer, loss=loss_function)
