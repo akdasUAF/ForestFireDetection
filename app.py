@@ -49,7 +49,7 @@ def predict():
     print(pred)
 
     # Returning the main page to the user with variables to use on the front end
-    return render_template("index.html", prediction = class_label, preds = pred, width = width, height = height)
+    return render_template("index.html", prediction = class_label, width = width, height = height, img = image_path)
 
 
 if __name__ == '__main__':
