@@ -48,11 +48,17 @@ def import_dataset(image_size):
 def create_model(input_shape):
     # Creating a Sequential Model and adding the layers
     model = Sequential()
+    model.add(Conv2D(10, 5, input_shape=input_shape))
+    model.add(MaxPooling2D(pool_size=(4,4)))
+    model.add(Conv2D(5, 4, input_shape=input_shape))
+    model.add(MaxPooling2D(pool_size=(3,3)))
     model.add(Conv2D(2, 3, input_shape=input_shape))
     model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
-    model.add(Dense(128, activation=tf.nn.relu))
-    model.add(Dropout(0.2))
+    model.add(Dense(100, activation=tf.nn.relu))
+    model.add(Dense(50, activation=tf.nn.relu))
+    model.add(Dense(25, activation=tf.nn.relu))
+    # model.add(Dropout(0.2))
     model.add(Dense(1,activation='sigmoid'))
     
     model.compile(optimizer='adam', 
@@ -62,7 +68,7 @@ def create_model(input_shape):
 
 
 def train(model, train_ds, validation_ds):
-    model.fit(x=train_ds, validation_data=validation_ds, epochs=2)
+    model.fit(x=train_ds, validation_data=validation_ds, epochs=10)
     return model
 
 
@@ -88,7 +94,7 @@ def main():
     cie.evaluate(model, test_ds)
 
     # save
-    model.save('forest_fire_cnn.h5')
+    model.save('Models/weights/forest_fire_cnn.h5')
 
     return 0
 
