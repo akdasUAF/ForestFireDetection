@@ -9,7 +9,7 @@ import io
 from cnn_create_train import *
 from cnn_import_evaluate import *
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
 model = create_model(image_size + (3, ))
 # import
