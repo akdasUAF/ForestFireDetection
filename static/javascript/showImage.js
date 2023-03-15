@@ -6,6 +6,7 @@ imageInput.addEventListener("change", function(){
     reader.addEventListener("load", () => {
         uploaded_image = reader.result;
         document.querySelector("#displayImg").style.backgroundImage = `url(${uploaded_image})`;
+        document.getElementById("revealText").style.display = "none";
     })
     reader.readAsDataURL(this.files[0]);
 })

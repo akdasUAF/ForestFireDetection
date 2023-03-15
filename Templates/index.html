@@ -15,7 +15,7 @@
 
         {% if prediction %}
             <img id="displayImg" style="background-image: url('{{img}}');"></img>
-            <p class="revealText">Image has {{prediction}}</p>
+            <p id="revealText" class="revealText">Image has {{prediction}}</p>
         {% else %}
             <img id="displayImg"></img>
         {% endif %}
