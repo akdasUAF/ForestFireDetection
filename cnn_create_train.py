@@ -94,7 +94,7 @@ def main():
     cie.evaluate(model, test_ds)
 
     # save
-    model.save('Models/weights/forest_fire_cnn.h5')
+    model.save('./Models/weights/forest_fire_cnn.h5')
 
     return 0
 

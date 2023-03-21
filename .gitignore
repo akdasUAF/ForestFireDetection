@@ -11,6 +11,8 @@ __pycache__/
 /Fire_Images
 /Local_testing
 *.jpg
+/Segmentation
+/Datasets
 
 # exception to the rule
 !/static/images/.gitkeep 

@@ -34,7 +34,7 @@ def main():
     loss_function = aect.ssim_loss
     epochs = 1
     model.compile(optimizer=optimizer, loss=loss_function)
-    model = import_model(model, f'Models\\weights\\forest_fire_ae_{optimizer}_{loss_function_name}_{epochs}.h5')
+    model = import_model(model, f'./Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
     # evaluate
     print("Performance on Non-Fire Training Data:")
