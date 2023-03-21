@@ -1,0 +1,239 @@
+2023-03-14 00:52:25.941724: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-03-14 00:52:26.142489: I tensorflow/core/util/port.cc:104] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2023-03-14 00:52:26.147755: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-03-14 00:52:26.147783: I tensorflow/compiler/xla/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2023-03-14 00:52:27.097654: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory
+2023-03-14 00:52:27.097740: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory
+2023-03-14 00:52:27.097751: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+2023-03-14 00:52:29.340793: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.340872: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.340917: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.340958: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcufft.so.10'; dlerror: libcufft.so.10: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.341000: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcurand.so.10'; dlerror: libcurand.so.10: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.341040: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.341080: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.341119: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
+2023-03-14 00:52:29.341136: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1934] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2023-03-14 00:52:29.341666: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+ * Serving Flask app 'app.py'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://137.229.25.190:8000
+Press CTRL+C to quit
+ * Restarting with stat
+2023-03-14 00:52:29.954718: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-03-14 00:52:30.148269: I tensorflow/core/util/port.cc:104] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2023-03-14 00:52:30.153334: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-03-14 00:52:30.153364: I tensorflow/compiler/xla/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2023-03-14 00:52:31.098031: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.098114: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.098127: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+2023-03-14 00:52:31.924936: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925005: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925050: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925090: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcufft.so.10'; dlerror: libcufft.so.10: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925130: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcurand.so.10'; dlerror: libcurand.so.10: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925182: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925220: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925257: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
+2023-03-14 00:52:31.925273: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1934] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2023-03-14 00:52:31.925657: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+ * Debugger is active!
+ * Debugger PIN: 103-726-783
+137.229.32.117 - - [14/Mar/2023 00:52:35] "GET / HTTP/1.1" 200 -
+137.229.32.117 - - [14/Mar/2023 00:52:35] "GET /static/css/style.css HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:52:35] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:52:36] "GET / HTTP/1.1" 200 -
+137.229.32.117 - - [14/Mar/2023 00:52:36] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:52:36] "GET /static/css/style.css HTTP/1.1" 304 -
+/home/lbunderwood/ForestFireDetection
+/home/lbunderwood/ForestFireDetection
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 217ms/step
+137.229.32.117 - - [14/Mar/2023 00:54:06] "POST / HTTP/1.1" 200 -
+137.229.32.117 - - [14/Mar/2023 00:54:06] "GET /static/css/style.css HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:06] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:06] "GET /static/images/11new-washington-briefing-alaska-1-mediumSquareAt3X.jpeg HTTP/1.1" 200 -
+Predicted class label: No Fire
+0.21471763
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 49ms/step
+137.229.32.117 - - [14/Mar/2023 00:54:49] "POST / HTTP/1.1" 200 -
+137.229.32.117 - - [14/Mar/2023 00:54:49] "GET /static/css/style.css HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:49] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:49] "GET /static/images/11new-washington-briefing-alaska-1-mediumSquareAt3X.jpeg HTTP/1.1" 200 -
+137.229.32.117 - - [14/Mar/2023 00:54:59] "POST / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 2551, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 2531, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/home/lbunderwood/ForestFireDetection/app.py", line 33, in predict
+    img = Image.open(image_path)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/PIL/Image.py", line 3283, in open
+    raise UnidentifiedImageError(msg)
+PIL.UnidentifiedImageError: cannot identify image file 'static/images/mm9134-073119-000121_square.avif'
+137.229.32.117 - - [14/Mar/2023 00:54:59] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:59] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:59] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 304 -
+137.229.32.117 - - [14/Mar/2023 00:54:59] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 304 -
+Predicted class label: No Fire
+0.21471763
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 48ms/step
+142.147.64.17 - - [14/Mar/2023 01:16:26] "POST / HTTP/1.1" 200 -
+142.147.64.17 - - [14/Mar/2023 01:16:26] "GET /static/css/style.css HTTP/1.1" 304 -
+142.147.64.17 - - [14/Mar/2023 01:16:26] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+142.147.64.17 - - [14/Mar/2023 01:16:26] "GET /static/images/20220201_155657.jpg HTTP/1.1" 200 -
+Predicted class label: No Fire
+2.6773796e-06
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 51ms/step
+142.147.64.17 - - [14/Mar/2023 01:17:29] "POST / HTTP/1.1" 200 -
+142.147.64.17 - - [14/Mar/2023 01:17:29] "GET /static/css/style.css HTTP/1.1" 304 -
+142.147.64.17 - - [14/Mar/2023 01:17:29] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+142.147.64.17 - - [14/Mar/2023 01:17:30] "GET /static/images/boreal-forest_web.jpg HTTP/1.1" 200 -
+69.178.93.87 - - [14/Mar/2023 01:23:34] "GET / HTTP/1.1" 200 -
+69.178.93.87 - - [14/Mar/2023 01:23:34] "GET /static/css/style.css HTTP/1.1" 200 -
+69.178.93.87 - - [14/Mar/2023 01:23:34] "GET /static/javascript/showImage.js HTTP/1.1" 200 -
+69.178.93.87 - - [14/Mar/2023 01:23:34] "GET /favicon.ico HTTP/1.1" 404 -
+69.178.93.87 - - [14/Mar/2023 01:25:54] "GET / HTTP/1.1" 200 -
+69.178.93.87 - - [14/Mar/2023 01:25:54] "GET /static/css/style.css HTTP/1.1" 304 -
+69.178.93.87 - - [14/Mar/2023 01:25:54] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+69.178.106.195 - - [14/Mar/2023 01:50:05] "GET / HTTP/1.1" 200 -
+69.178.106.195 - - [14/Mar/2023 01:50:05] "GET /static/css/style.css HTTP/1.1" 304 -
+69.178.106.195 - - [14/Mar/2023 01:50:05] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+Predicted class label: Fire
+0.93221503
+/home/lbunderwood/ForestFireDetection
+/home/lbunderwood/ForestFireDetection
+/home/lbunderwood/ForestFireDetection
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 46ms/step
+69.178.106.195 - - [14/Mar/2023 01:50:34] "POST / HTTP/1.1" 200 -
+69.178.106.195 - - [14/Mar/2023 01:50:34] "GET /static/css/style.css HTTP/1.1" 304 -
+69.178.106.195 - - [14/Mar/2023 01:50:34] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+69.178.106.195 - - [14/Mar/2023 01:50:34] "GET /static/images/20210530_133932.jpg HTTP/1.1" 200 -
+Predicted class label: No Fire
+0.00026309857
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 46ms/step
+69.178.106.195 - - [14/Mar/2023 01:51:11] "POST / HTTP/1.1" 200 -
+69.178.106.195 - - [14/Mar/2023 01:51:11] "GET /static/css/style.css HTTP/1.1" 304 -
+69.178.106.195 - - [14/Mar/2023 01:51:11] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+69.178.106.195 - - [14/Mar/2023 01:51:11] "GET /static/images/download.jpeg HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:16:24] "GET / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:16:24] "GET /static/css/style.css HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:16:24] "GET /static/javascript/showImage.js HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:16:24] "GET /favicon.ico HTTP/1.1" 404 -
+Predicted class label: Fire
+0.9997905
+/home/lbunderwood/ForestFireDetection
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 46ms/step
+10.25.250.152 - - [14/Mar/2023 16:16:38] "POST / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:16:38] "GET /static/css/style.css HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:16:38] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:16:38] "GET /static/images/resized_frame3.jpg HTTP/1.1" 200 -
+Predicted class label: Fire
+1.0
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 42ms/step
+10.25.250.152 - - [14/Mar/2023 16:16:54] "POST / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:16:54] "GET /static/css/style.css HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:16:54] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:16:54] "GET /static/images/lake_resized_lake_frame5.jpg HTTP/1.1" 200 -
+Predicted class label: No Fire
+1.561101e-10
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 52ms/step
+10.25.250.152 - - [14/Mar/2023 16:17:15] "POST / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:17:15] "GET /static/css/style.css HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:17:15] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:17:15] "GET /static/images/lake_resized_lake_frame8677.jpg HTTP/1.1" 200 -
+Predicted class label: No Fire
+1.8613354e-11
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 47ms/step
+10.25.250.152 - - [14/Mar/2023 16:17:43] "POST / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:17:43] "GET /static/css/style.css HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:17:43] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:17:43] "GET /static/images/resized_test_fire_frame651.jpg HTTP/1.1" 200 -
+Predicted class label: Fire
+1.0
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 52ms/step
+10.25.250.152 - - [14/Mar/2023 16:18:05] "POST / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:18:05] "GET /static/css/style.css HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:18:05] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:18:05] "GET /static/images/resized_test_fire_frame5132.jpg HTTP/1.1" 200 -
+Predicted class label: Fire
+0.99864185
+1/1 [==============================] - ETA: 0s1/1 [==============================] - 0s 49ms/step
+10.25.250.152 - - [14/Mar/2023 16:18:17] "POST / HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:18:17] "GET /static/css/style.css HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:18:17] "GET /static/javascript/showImage.js HTTP/1.1" 304 -
+10.25.250.152 - - [14/Mar/2023 16:18:17] "GET /static/images/resized_test_fire_frame2483.jpg HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:18:30] "POST / HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 2551, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 2531, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 2528, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 1825, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 1823, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/home/lbunderwood/ForestFireDetection/app.py", line 30, in predict
+    imageFile.save(image_path)
+  File "/home/lbunderwood/.local/lib/python3.10/site-packages/werkzeug/datastructures.py", line 3002, in save
+    dst = open(dst, "wb")
+IsADirectoryError: [Errno 21] Is a directory: 'static/images/'
+10.25.250.152 - - [14/Mar/2023 16:18:31] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:18:31] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:18:31] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+10.25.250.152 - - [14/Mar/2023 16:18:31] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 304 -
+ * Detected change in '/home/lbunderwood/ForestFireDetection/app.py', reloading
+Predicted class label: Fire
+0.99601424
+ * Restarting with stat
+2023-03-14 16:20:27.156279: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-03-14 16:20:27.325583: I tensorflow/core/util/port.cc:104] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2023-03-14 16:20:27.330775: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-03-14 16:20:27.330803: I tensorflow/compiler/xla/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2023-03-14 16:20:28.281731: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer.so.7'; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory
+2023-03-14 16:20:28.281814: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libnvinfer_plugin.so.7'; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory
+2023-03-14 16:20:28.281826: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+2023-03-14 16:20:29.113449: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudart.so.11.0'; dlerror: libcudart.so.11.0: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113526: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublas.so.11'; dlerror: libcublas.so.11: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113577: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcublasLt.so.11'; dlerror: libcublasLt.so.11: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113624: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcufft.so.10'; dlerror: libcufft.so.10: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113682: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcurand.so.10'; dlerror: libcurand.so.10: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113724: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusolver.so.11'; dlerror: libcusolver.so.11: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113765: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcusparse.so.11'; dlerror: libcusparse.so.11: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113806: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library 'libcudnn.so.8'; dlerror: libcudnn.so.8: cannot open shared object file: No such file or directory
+2023-03-14 16:20:29.113822: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1934] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+2023-03-14 16:20:29.114236: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+'FLASK_ENV' is deprecated and will not be used in Flask 2.3. Use 'FLASK_DEBUG' instead.
+ * Debugger is active!
+ * Debugger PIN: 103-726-783

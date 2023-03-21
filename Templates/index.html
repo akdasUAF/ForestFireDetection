@@ -9,14 +9,13 @@
         <h1 class="text-center">Image Classifier</h1>
 
         <form class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
-            <input id="imageInput" class="form-control" type="file" name="imageFile">
+            <input id="imageInput" class="form-control btn btn-primary mt-3" type="file" name="imageFile">
             <input class="btn btn-primary mt-3" type="submit" value="Check for Fire">
         </form>
 
         {% if prediction %}
             <img id="displayImg" style="background-image: url('{{img}}');"></img>
-            <p class="text-center">Image has {{prediction}}</p>
-            <p class="text-center">Origional dimensions of the image are {{width}}px x {{height}}px scaled down to 224px x 224px</p>
+            <p id="revealText" class="revealText">Image has {{prediction}}</p>
         {% else %}
             <img id="displayImg"></img>
         {% endif %}
