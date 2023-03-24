@@ -20,13 +20,13 @@ import sys
 def import_classification_datasets(image_size, batch_size):
     
     # Create an ImageDataGenerator to load the images
-    image_datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
-    test_image_datagen = ImageDataGenerator(rescale=1./255)
+    image_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
+    test_image_datagen = ImageDataGenerator(rescale=1/255)
     
-    no_fire_train_dir   = './Datasets/No_Fire_Images/Training/'
-    no_fire_test_dir    = './Datasets/No_Fire_Images/Training/'
-    fire_train_dir      = './Datasets/Fire_Images/Training/'
-    fire_test_dir       = './Datasets/Fire_Images/Test/'
+    no_fire_train_dir   = 'D:/UAF/CS Capstone/Datasets/No_Fire_Images/Training/'
+    no_fire_test_dir    = 'D:/UAF/CS Capstone/Datasets/No_Fire_Images/Training/'
+    fire_train_dir      = 'D:/UAF/CS Capstone/Datasets/Fire_Images/Training/'
+    fire_test_dir       = 'D:/UAF/CS Capstone/Datasets/Fire_Images/Test/'
     
     ### No Fire Datasets ###
     no_fire_train_ds = image_datagen.flow_from_directory(
@@ -81,11 +81,11 @@ def import_classification_datasets(image_size, batch_size):
 def import_segmentation_dataset(image_size, batch_size):
     
     # Create an ImageDataGenerator to load the images
-    image_datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
-    mask_datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
+    image_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
+    mask_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
     
-    image_dir = './Datasets/Segmentation/Images'
-    mask_dir = './Datasets/Segmentation/Masks'
+    image_dir = 'D:/UAF/CS Capstone/Datasets/Segmentation/Images'
+    mask_dir = 'D:/UAF/CS Capstone/Datasets/Segmentation/Masks'
     
     ### Image Datasets ###
     image_train_ds = image_datagen.flow_from_directory(
@@ -186,7 +186,7 @@ def main():
     model = create_autoencoder_model(image_shape)
 
     model.build((None, ) + image_shape)
-    plot_dir = f'./Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
+    plot_dir = f'D:/UAF/CS Capstone/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
     plot_model(model, to_file=plot_dir, show_shapes=True)
 
     # Define hyperparameters
@@ -200,7 +200,7 @@ def main():
     model = train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
 
     # Save
-    model.save(f'./Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
+    model.save(f'D:/UAF/CS Capstone/Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
     # Evaluate
     test_loss = model.evaluate(no_fire_test_ds)
