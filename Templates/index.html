@@ -11,6 +11,16 @@
         <form class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
             <input id="imageInput" class="form-control btn btn-primary mt-3" type="file" name="imageFile">
             <input class="btn btn-primary mt-3" type="submit" value="Check for Fire">
+            <select name="modelOptions">
+                {% for model in listOfModels %}
+                    {% if modelToUse == model.name %}
+                    <option selected value="{{model.name}}">{{model.name}}</option>
+                    {% else %}
+                    <option value="{{model.name}}">{{model.name}}</option>
+                    {% endif %}
+                    
+                {% endfor %}
+            </select>
         </form>
 
         {% if prediction %}
