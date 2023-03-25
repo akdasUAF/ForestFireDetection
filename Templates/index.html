@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CNN Model Test</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+
+    <body>
+        <h1 class="text-center">Image Classifier</h1>
+
+        <form class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
+            <input id="imageInput" class="form-control btn btn-primary mt-3" type="file" name="imageFile">
+            <input class="btn btn-primary mt-3" type="submit" value="Check for Fire">
+            <select name="modelOptions">
+                {% for model in listOfModels %}
+                    {% if modelToUse == model.name %}
+                    <option selected value="{{model.name}}">{{model.name}}</option>
+                    {% else %}
+                    <option value="{{model.name}}">{{model.name}}</option>
+                    {% endif %}
+                    
+                {% endfor %}
+            </select>
+        </form>
+
+        {% if prediction %}
+            <img id="displayImg" style="background-image: url('{{img}}');"></img>
+            <p id="revealText" class="revealText">Image has {{prediction}}</p>
+        {% else %}
+            <img id="displayImg"></img>
+        {% endif %}
+
+        <script src="{{ url_for('static', filename='javascript/showImage.js') }}"></script>
+    </body>
+</html>
