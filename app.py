@@ -12,6 +12,36 @@ from ae_import_evaluate import *
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
+
+def autoEncoderPredict(image):
+    threshold = 66
+    img_normalized = image.astype('float32') / 255.0
+    img_normalized = np.expand_dims(img_normalized, axis=0)
+    
+    # Use model to reconstruct and remove batch dimension
+    reconstructed_img = model.predict(img_normalized)
+    reconstructed_img = reconstructed_img[0]
+    
+    # Reconstruct and save image
+    reconstructed_img_color = np.clip(reconstructed_img * 255.0, 0, 255).astype('uint8')
+    reconstructed_img_color = cv2.cvtColor(reconstructed_img_color, cv2.COLOR_BGR2RGB)
+    
+    # Calculate Error
+    mse_pix = np.mean(np.square(image - reconstructed_img_color), axis=-1)
+    mse = np.mean(np.square(image - reconstructed_img_color))
+    print(f"The mean squared error {mse}")
+    
+    if mse > threshold:
+        print('Anomaly detected in the image!')
+        max_mse_pixel = np.unravel_index(np.argmax(mse_pix), mse_pix.shape)
+        print('Pixel with highest MSE:', max_mse_pixel)
+        circle_image = cv2.circle(image, (max_mse_pixel[0], max_mse_pixel[1]), radius=5, color=(0, 0, 255), thickness=2)
+        #cv2.imwrite(circle_output_file, circle_image)
+        return 1
+    else:
+        print('No anomaly detected in the image.')
+        return 0
+    
 model = create_model(image_size + (3, ))
 # import
 model = import_model(model, f'Models/weights/forest_fire_cnn.h5')
