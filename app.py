@@ -42,6 +42,12 @@ def autoEncoderPredict(image):
         print('No anomaly detected in the image.')
         return 0
     
+def cnnPredict(image):
+    image = np.array(image, dtype=np.float32)
+    pred = model.predict(np.expand_dims(image, axis=0))[0][0]
+
+    return round(pred)
+
 model = create_model(image_size + (3, ))
 # import
 model = import_model(model, f'Models/weights/forest_fire_cnn.h5')
