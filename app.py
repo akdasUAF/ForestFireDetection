@@ -1,13 +1,14 @@
 from flask import Flask, render_template, request, jsonify
 
-# Import Python Imaging Library PIL(Pillow)
-from PIL import Image, ImageDraw
+import cv2
 
 import tensorflow as tf
 import numpy as np
 import io
 from cnn_create_train import *
 from cnn_import_evaluate import *
+from ae_create_train import *
+from ae_import_evaluate import *
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
