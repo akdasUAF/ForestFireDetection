@@ -48,46 +48,48 @@ def cnnPredict(image):
 
     return round(pred)
 
+# Creating and importing CNN
 model = create_model(image_size + (3, ))
-# import
 model = import_model(model, f'Models/weights/forest_fire_cnn.h5')
+
+# Creating and importing bad CNN
+model2 = create_autoencoder_model(image_size + (3, ))
+model2 = import_model(model2, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+
+listOfModels = [{'name': 'CNN 99%', 'model' : model}, {'name': 'Autoencoder', 'model' : model2}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():
-    return render_template('index.html')
+    return render_template('index.html', listOfModels = listOfModels)
 
 @app.route('/', methods = ['POST'])
 def predict():
     # Define a list of class labels
     class_labels = ['No Fire', 'Fire']
+    class_label = 0
     imageFile = request.files['imageFile']
     image_path = "static/images/" + imageFile.filename
     imageFile.save(image_path)
+    modelToUse = request.form.get('modelOptions')
 
     # Grab Image
-    img = Image.open(image_path)
+    img = cv2.imread(image_path, cv2.IMREAD_COLOR)
 
-    # Get and Print Width and Height
-    width = img.width
-    height = img.height
+    # Resize Image
+    resizedImage = cv2.resize(img, image_size, cv2.INTER_AREA)
 
-    img = img.resize((254, 254))
-    img = np.array(img, dtype=np.float32)
-
-    pred = model.predict(np.expand_dims(img, axis=0))[0][0]
-
-    class_idx = round(pred)
-
-    # Map the class index to a label
-    class_label = class_labels[class_idx]
-
-    # Print the predicted class label
-    print('Predicted class label: {}'.format(class_label))
-    print(pred)
-
-    # Returning the main page to the user with variables to use on the front end
-    return render_template("index.html", prediction = class_label, width = width, height = height, img = image_path)
-
+    if modelToUse == "CNN 99%":
+        # Predicting with CNN
+        class_idx = cnnPredict(resizedImage)
+        # Assign Label
+        class_label = class_labels[class_idx]
+    elif modelToUse == "Autoencoder":
+        # Predicting with Autoencoder
+        class_idx = autoEncoderPredict(resizedImage)
+        # Assign Label
+        class_label = class_labels[class_idx]
+    
+    return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port = 8000, debug = True)
