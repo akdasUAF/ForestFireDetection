@@ -6,25 +6,15 @@ tf.disable_v2_behavior()
 import glob2 as gb
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+import sys
 
-# Global Variables
-image_width_in_pixels = 254
-image_height_in_pixels = 254
-image_size = (image_width_in_pixels, image_height_in_pixels)
-batch_size = 32 # Default is 32
-channels = 3
-validation_split = 0.2
-num_classes = 2
-class_names = ['Fire', 'No_Fire']
-trX, trY, teX, teY = 0, 0, 0, 0
-
-img_dir = '/content/drive/MyDrive/IEEE_Flame/'
-#img_dir = 'C:\\Users\\nicol\\Downloads\\'
-
-def import_dataset():
+def import_dataset(batch_size, class_names, target_size):
+    img_dir = '/content/drive/MyDrive/IEEE_Flame/'
+    #img_dir = 'C:\\Users\\nicol\\Downloads\\'
     train_ds = tf.keras.preprocessing.image.ImageDataGenerator().flow_from_directory(
             img_dir + 'Training/', batch_size=batch_size, class_mode='categorical', classes = class_names,
-        seed=123, shuffle=True, target_size=(image_height_in_pixels, image_width_in_pixels), subset='training'
+        seed=123, shuffle=True, target_size=target_size, subset='training'
             )
 
     train_images, x_train_labels = next(train_ds)
@@ -33,7 +23,7 @@ def import_dataset():
 
     #validation_ds = tf.keras.preprocessing.image.ImageDataGenerator().flow_from_directory(
     #    img_dir + 'Training/', batch_size=batch_size, class_mode='categorical', 
-    #    seed=123, shuffle=True, target_size=(image_height_in_pixels, image_width_in_pixels), subset='validation'
+    #    seed=123, shuffle=True, target_size=target_size, subset='validation'
     #    )
     validation_ds = train_ds
 
@@ -43,7 +33,7 @@ def import_dataset():
 
     test_ds = tf.keras.preprocessing.image.ImageDataGenerator().flow_from_directory(
         img_dir + 'Test/', batch_size=batch_size, class_mode='categorical', classes = class_names,
-        seed=123, shuffle=True, target_size=(image_height_in_pixels, image_width_in_pixels),
+        seed=123, shuffle=True, target_size=target_size,
         )
 
     test_images, test_labels = next(test_ds)
@@ -54,6 +44,7 @@ def import_dataset():
 
     # x_train.shape: (25, 254, 254, 3), 193548 = 254*254*3
     trX, trY, teX, teY = x_train.reshape(x_train.shape[0], 193548).astype('float32')/255, y_train.reshape(x_train.shape[0], 193548).astype('float32')/255, x_test.reshape(x_test.shape[0], 193548).astype('float32')/255, y_test.reshape(x_test.shape[0], 193548).astype('float32')/255
+    return (trX, trY, teX, teY)
 
 class RBM(object):
     def __init__(self, input_size, output_size, learning_rate, batch_size):
@@ -93,7 +84,8 @@ class RBM(object):
     def sample_prob(self, probs):
         return tf.nn.relu(tf.sign(probs - tf.random_uniform(tf.shape(probs))))
     
-    def train(self, X, teX):
+    def train(self, X):
+        
         #Initalize placeholder values for graph
         _w = tf.placeholder(tf.float32, shape = [self.input_size, self.output_size])
         _vb = tf.placeholder(tf.float32, shape = [self.input_size])
@@ -198,12 +190,9 @@ class RBM(object):
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
             return sess.run(out)
-
-RBM_hidden_size = [600, 500, 100] #Three hidden layer sizes for our three layer DBN
-learning_rate = .01 
-
-def train_DBN():
-  
+    
+def train_DBN(RBM_hidden_size, learning_rate, batch_size, class_names, target_size):
+  (trX, _, teX, _) = import_dataset(batch_size, class_names, target_size)
   input_size = trX.shape[1] #input layer size of original image data
 
   rbm_list = [] #This will hold all of the RBMs used in our DBN
@@ -255,3 +244,31 @@ def fwd_DBN(rbm_list, features):
 
     print('Output Shape: ', inpX.shape)
   return inpX
+
+
+
+def main():
+    # Train Setup
+    target_size = (254, 254)
+    batch_size = 32 # Default is 32
+    class_names = ['Fire', 'No_Fire']
+    (trX, trY, teX, teY) = import_dataset(batch_size, class_names, target_size)
+
+    RBM_hidden_size = [600, 500, 100] #Three hidden layer sizes for our three layer DBN
+    learning_rate = .01 
+    
+    rmb_list = train_DBN(RBM_hidden_size, learning_rate, batch_size, class_names, target_size)
+
+    train_features = fwd_DBN(rmb_list, trX)
+    train_labels = trY
+    clf = LogisticRegression()
+    #train_labels = train_labels.reshape(train_labels.shape[0], )
+    #train_labels = train_labels.reshape((100,))
+
+    clf.fit(train_features, train_labels.argmax(axis=1))
+    #trX, trY, teX, teY = 0, 0, 0, 0
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
