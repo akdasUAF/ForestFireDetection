@@ -20,7 +20,7 @@ def autoEncoderPredict(image):
     img_normalized = np.expand_dims(img_normalized, axis=0)
     
     # Use model to reconstruct and remove batch dimension
-    reconstructed_img = model.predict(img_normalized)
+    reconstructed_img = aeModel.predict(img_normalized)
     reconstructed_img = reconstructed_img[0]
     
     # Reconstruct and save image
@@ -45,7 +45,7 @@ def autoEncoderPredict(image):
     
 def cnnPredict(image):
     image = np.array(image, dtype=np.float32)
-    pred = model.predict(np.expand_dims(image, axis=0))[0][0]
+    pred = cnnModel.predict(np.expand_dims(image, axis=0))[0][0]
 
     return round(pred)
 
@@ -58,18 +58,18 @@ def dbnPredict(image):
     return pred
 
 # Creating and importing CNN
-model = create_model(image_size + (3, ))
-model = import_model(model, f'Models/weights/forest_fire_cnn.h5')
+cnnModel = create_model(image_size + (3, ))
+cnnModel = import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
 
 # Creating and importing Autoencoder
-model2 = create_autoencoder_model(image_size + (3, ))
-model2 = import_model(model2, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+aeModel = create_autoencoder_model(image_size + (3, ))
+aeModel = import_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
 # Creating and importing Deep Belief Network
 with open('Models/weights/forest_fire_db.pkl', 'rb') as f:
     rbm_list, dbn = pickle.load(f)
 
-listOfModels = [{'name': 'CNN 99%', 'model' : model}, {'name': 'Autoencoder', 'model' : model2}, {'name': 'Deep Belief', 'model' : dbn}]
+listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbn}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -101,7 +101,7 @@ def predict():
         class_idx = autoEncoderPredict(resizedImage)
         # Assign Label
         class_label = class_labels[class_idx]
-    if modelToUse == "Deep Belief":
+    elif modelToUse == "Deep Belief":
         # Predicting with CNN
         class_idx = dbnPredict(resizedImage)
         # Assign Label
