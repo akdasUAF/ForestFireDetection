@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, DirectoryIterator
 
 tf.disable_v2_behavior()
@@ -8,9 +8,10 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 import sys
+import pickle
 
 def import_dataset(batch_size, class_names, target_size):
-    img_dir = '/content/drive/MyDrive/IEEE_Flame/'
+    img_dir = './'
     #img_dir = 'C:\\Users\\nicol\\Downloads\\'
     train_ds = tf.keras.preprocessing.image.ImageDataGenerator().flow_from_directory(
             img_dir + 'Training/', batch_size=batch_size, class_mode='categorical', classes = class_names,
@@ -215,7 +216,7 @@ def train_DBN(RBM_hidden_size, learning_rate, batch_size, class_names, target_si
     print('Input Shape: ', inpX.shape)
     print('Layer: ',(i+1))
 
-    rbm.train(inpX, teX)
+    rbm.train(inpX)
     #inpX = tf.cast(inpX, tf.float32)
     inpX = rbm.rbm_output(inpX)
     test_inpx = rbm.rbm_output(test_inpx)
@@ -257,9 +258,9 @@ def main():
     RBM_hidden_size = [600, 500, 100] #Three hidden layer sizes for our three layer DBN
     learning_rate = .01 
     
-    rmb_list = train_DBN(RBM_hidden_size, learning_rate, batch_size, class_names, target_size)
+    rbm_list = train_DBN(RBM_hidden_size, learning_rate, batch_size, class_names, target_size)
 
-    train_features = fwd_DBN(rmb_list, trX)
+    train_features = fwd_DBN(rbm_list, trX)
     train_labels = trY
     clf = LogisticRegression()
     #train_labels = train_labels.reshape(train_labels.shape[0], )
@@ -267,6 +268,10 @@ def main():
 
     clf.fit(train_features, train_labels.argmax(axis=1))
     #trX, trY, teX, teY = 0, 0, 0, 0
+
+    with open('./Models/weights/forest_fire_db.pkl','wb') as f:
+        pickle.dump((rbm_list, clf),f)
+
     return 0
 
 

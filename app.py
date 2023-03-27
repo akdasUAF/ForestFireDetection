@@ -4,10 +4,12 @@ import cv2
 
 import tensorflow as tf
 import numpy as np
+import pickle
 from cnn_create_train import *
 from cnn_import_evaluate import *
 from ae_create_train import *
 from ae_import_evaluate import *
+from db_create_train import *
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
@@ -47,15 +49,27 @@ def cnnPredict(image):
 
     return round(pred)
 
+def dbnPredict(image):
+    image = np.array(image, dtype=np.float32)
+    image = image.reshape(1, 193548).astype('float32')/255
+    print(image.shape)
+    pred = dbn.predict(fwd_DBN(rbm_list, image))
+    print(pred)
+    return pred
+
 # Creating and importing CNN
 model = create_model(image_size + (3, ))
 model = import_model(model, f'Models/weights/forest_fire_cnn.h5')
 
-# Creating and importing bad CNN
+# Creating and importing Autoencoder
 model2 = create_autoencoder_model(image_size + (3, ))
 model2 = import_model(model2, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
-listOfModels = [{'name': 'CNN 99%', 'model' : model}, {'name': 'Autoencoder', 'model' : model2}]
+# Creating and importing Deep Belief Network
+with open('Models/weights/forest_fire_db.pkl', 'rb') as f:
+    rbm_list, dbn = pickle.load(f)
+
+listOfModels = [{'name': 'CNN 99%', 'model' : model}, {'name': 'Autoencoder', 'model' : model2}, {'name': 'Deep Belief', 'model' : dbn}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -85,6 +99,11 @@ def predict():
     elif modelToUse == "Autoencoder":
         # Predicting with Autoencoder
         class_idx = autoEncoderPredict(resizedImage)
+        # Assign Label
+        class_label = class_labels[class_idx]
+    if modelToUse == "Deep Belief":
+        # Predicting with CNN
+        class_idx = dbnPredict(resizedImage)
         # Assign Label
         class_label = class_labels[class_idx]
     
