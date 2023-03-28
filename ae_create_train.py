@@ -4,12 +4,11 @@
 # forest fires in images
 
 import tensorflow as tf
-from tensorflow import keras
 from tensorflow import image
-from keras.utils import plot_model
-from keras.models import Sequential
-from keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D, UpSampling2D, Activation
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D, UpSampling2D, Activation
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import sys
 #import ae_import_evaluate as aeie
 

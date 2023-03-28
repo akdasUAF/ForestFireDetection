@@ -37,6 +37,9 @@ def main():
     model.compile(optimizer=optimizer, loss=loss_function)
     model = import_model(model, f'./Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
+    # Prints the model summary
+    model.summary()
+
     # Evaluate
     print("Performance on Non-Fire Training Data:")
     evaluate(model, no_fire_train_ds)
