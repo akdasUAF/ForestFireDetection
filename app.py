@@ -18,7 +18,7 @@ def autoEncoderPredict(image):
     img_normalized = np.expand_dims(img_normalized, axis=0)
     
     # Use model to reconstruct and remove batch dimension
-    reconstructed_img = model.predict(img_normalized)
+    reconstructed_img = model2.predict(img_normalized)
     reconstructed_img = reconstructed_img[0]
     
     # Reconstruct and save image
