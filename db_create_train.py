@@ -267,10 +267,6 @@ def main():
 
     clf.fit(train_features, train_labels.argmax(axis=1))
     #trX, trY, teX, teY = 0, 0, 0, 0
-    import joblib
-    filename = './Models/weights/logistic_regression_model.pkl'
-    joblib.dump(clf, filename)
-
     return 0
 
 
