@@ -127,7 +127,7 @@ def import_segmentation_dataset(image_size, batch_size):
     return train_ds, val_ds
 
 
-def create_autoencoder_model(input_shape):
+def create_ae_model(input_shape):
     
     # Define the encoder layers
     inputs = tf.keras.layers.Input(shape=input_shape, name="Input")
@@ -153,11 +153,8 @@ def create_autoencoder_model(input_shape):
     #tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT3'),
     #tf.keras.layers.Conv2DTranspose(filters=3, kernel_size=3, activation='sigmoid', padding='same', name='Output')
     
-    # Define the full autoencoder model
+    # Define autoencoder model using all layers 
     autoencoder = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='Autoencoder')
-    
-    # Prints the model summary
-    autoencoder.summary()
     
     return autoencoder
 
@@ -183,11 +180,13 @@ def main():
 
     # Create and save architecture as figure
     image_shape = image_size + (3, )
-    model = create_autoencoder_model(image_shape)
+    model = create_ae_model(image_shape)
 
+    # Build model and print the summary
     model.build((None, ) + image_shape)
     plot_dir = f'D:/UAF/CS Capstone/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
     plot_model(model, to_file=plot_dir, show_shapes=True)
+    model.summary()
 
     # Define hyperparameters
     optimizer = 'adam'

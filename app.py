@@ -4,10 +4,10 @@ import cv2
 
 import tensorflow as tf
 import numpy as np
-from cnn_create_train import *
-from cnn_import_evaluate import *
-from ae_create_train import *
-from ae_import_evaluate import *
+from cnn_create_train import create_cnn_model
+from cnn_import_evaluate import import_cnn_model
+from ae_create_train import create_ae_model
+from ae_import_evaluate import import_ae_model
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
@@ -48,12 +48,12 @@ def cnnPredict(image):
     return round(pred)
 
 # Creating and importing CNN
-model = create_model(image_size + (3, ))
-model = import_model(model, f'Models/weights/forest_fire_cnn.h5')
+model = create_cnn_model(image_size + (3, ))
+model = import_cnn_model(model, f'Models/weights/forest_fire_cnn.h5')
 
 # Creating and importing bad CNN
-model2 = create_autoencoder_model(image_size + (3, ))
-model2 = import_model(model2, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+model2 = create_ae_model(image_size + (3, ))
+model2 = import_ae_model(model2, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
 listOfModels = [{'name': 'CNN 99%', 'model' : model}, {'name': 'Autoencoder', 'model' : model2}]
 
