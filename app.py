@@ -9,7 +9,7 @@ from cnn_create_train import *
 from cnn_import_evaluate import *
 from ae_create_train import *
 from ae_import_evaluate import *
-from db_create_train import *
+from db_import_evaluate import *
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
@@ -51,11 +51,9 @@ def cnnPredict(image):
 
 def dbnPredict(image):
     image = np.array(image, dtype=np.float32)
-    image = image.reshape(1, 193548).astype('float32')/255
-    print(image.shape)
-    pred = dbn.predict(fwd_DBN(rbm_list, image))
-    print(pred)
-    return pred
+    image = image.reshape(-1, 193548) / 255.0
+    pred = dbModel.predict(image)
+    return pred[0]
 
 # Creating and importing CNN
 cnnModel = create_model(image_size + (3, ))
@@ -66,10 +64,9 @@ aeModel = create_autoencoder_model(image_size + (3, ))
 aeModel = import_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
 # Creating and importing Deep Belief Network
-with open('Models/weights/forest_fire_db.pkl', 'rb') as f:
-    rbm_list, dbn = pickle.load(f)
+dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
 
-listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbn}]
+listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbModel}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():

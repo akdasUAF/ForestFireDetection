@@ -158,7 +158,7 @@ def create_autoencoder_model(input_shape):
     autoencoder = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='Autoencoder')
     
     # Prints the model summary
-    autoencoder.summary()
+    # autoencoder.summary()
     
     return autoencoder
 
