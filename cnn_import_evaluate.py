@@ -8,7 +8,7 @@ import tensorflow as tf
 import cnn_create_train as cct
 
 
-def import_model(model, path):
+def import_cnn_model(model, path):
     model.load_weights(path)
     return model
 
@@ -21,10 +21,10 @@ def main():
     # setup
     image_size = (254, 254)
     train_ds, validation_ds, test_ds = cct.import_dataset(image_size)
-    model = cct.create_model(image_size + (3, ))
+    model = cct.create_cnn_model(image_size + (3, ))
 
     # import
-    model = import_model(model, './Models/weights/forest_fire_cnn.h5')
+    model = import_cnn_model(model, './Models/weights/forest_fire_cnn.h5')
 
     # evaluate
     print("Performance on Training Data:")

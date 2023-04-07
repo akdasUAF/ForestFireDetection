@@ -4,7 +4,6 @@ import cv2
 
 import tensorflow as tf
 import numpy as np
-import pickle
 from cnn_create_train import *
 from cnn_import_evaluate import *
 from ae_create_train import *

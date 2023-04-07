@@ -46,7 +46,7 @@ def import_dataset(image_size):
     return train_ds, validation_ds, test_ds
 
 
-def create_model(input_shape):
+def create_cnn_model(input_shape):
     # Creating a Sequential Model and adding the layers
     model = Sequential()
     model.add(Conv2D(10, 5, input_shape=input_shape))

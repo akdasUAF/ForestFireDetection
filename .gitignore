@@ -19,3 +19,4 @@ __pycache__/
 # exception to the rule
 !/static/images/.gitkeep 
 !/static/imagesToSendBack/.gitkeep
+*.pkl
