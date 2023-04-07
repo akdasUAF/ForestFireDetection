@@ -14,7 +14,7 @@ __pycache__/
 /Segmentation
 /Datasets
 
-/Models/weights/forest_fire_db*
+/Models/weights/dbn_pipeline_model.joblib
 
 # exception to the rule
 !/static/images/.gitkeep 
