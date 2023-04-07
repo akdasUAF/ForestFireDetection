@@ -55,12 +55,12 @@ def dbnPredict(image):
     return pred[0]
 
 # Creating and importing CNN
-cnnModel = create_model(image_size + (3, ))
-cnnModel = import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
+cnnModel = CNN_create_model(image_size + (3, ))
+cnnModel = CNN_import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
 
 # Creating and importing Autoencoder
-aeModel = create_autoencoder_model(image_size + (3, ))
-aeModel = import_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+aeModel = create_ae_model(image_size + (3, ))
+aeModel = import_ae_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
 # Creating and importing Deep Belief Network
 dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
