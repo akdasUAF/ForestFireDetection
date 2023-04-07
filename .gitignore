@@ -14,6 +14,8 @@ __pycache__/
 /Segmentation
 /Datasets
 
+/Models/weights/forest_fire_db*
+
 # exception to the rule
 !/static/images/.gitkeep 
 !/static/imagesToSendBack/.gitkeep
