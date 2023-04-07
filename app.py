@@ -4,10 +4,11 @@ import cv2
 
 import tensorflow as tf
 import numpy as np
-from cnn_create_train import create_cnn_model
-from cnn_import_evaluate import import_cnn_model
-from ae_create_train import create_ae_model
-from ae_import_evaluate import import_ae_model
+from cnn_create_train import *
+from cnn_import_evaluate import *
+from ae_create_train import *
+from ae_import_evaluate import *
+from db_import_evaluate import *
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
@@ -18,7 +19,7 @@ def autoEncoderPredict(image):
     img_normalized = np.expand_dims(img_normalized, axis=0)
     
     # Use model to reconstruct and remove batch dimension
-    reconstructed_img = model2.predict(img_normalized)
+    reconstructed_img = aeModel.predict(img_normalized)
     reconstructed_img = reconstructed_img[0]
     
     # Reconstruct and save image
@@ -43,19 +44,28 @@ def autoEncoderPredict(image):
     
 def cnnPredict(image):
     image = np.array(image, dtype=np.float32)
-    pred = model.predict(np.expand_dims(image, axis=0))[0][0]
+    pred = cnnModel.predict(np.expand_dims(image, axis=0))[0][0]
 
     return round(pred)
 
+def dbnPredict(image):
+    image = np.array(image, dtype=np.float32)
+    image = image.reshape(-1, 193548) / 255.0
+    pred = dbModel.predict(image)
+    return pred[0]
+
 # Creating and importing CNN
-model = create_cnn_model(image_size + (3, ))
-model = import_cnn_model(model, f'Models/weights/forest_fire_cnn.h5')
+cnnModel = create_model(image_size + (3, ))
+cnnModel = import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
 
-# Creating and importing bad CNN
-model2 = create_ae_model(image_size + (3, ))
-model2 = import_ae_model(model2, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+# Creating and importing Autoencoder
+aeModel = create_autoencoder_model(image_size + (3, ))
+aeModel = import_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
-listOfModels = [{'name': 'CNN 99%', 'model' : model}, {'name': 'Autoencoder', 'model' : model2}]
+# Creating and importing Deep Belief Network
+dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
+
+listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbModel}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -85,6 +95,11 @@ def predict():
     elif modelToUse == "Autoencoder":
         # Predicting with Autoencoder
         class_idx = autoEncoderPredict(resizedImage)
+        # Assign Label
+        class_label = class_labels[class_idx]
+    elif modelToUse == "Deep Belief":
+        # Predicting with CNN
+        class_idx = dbnPredict(resizedImage)
         # Assign Label
         class_label = class_labels[class_idx]
     
