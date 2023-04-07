@@ -18,3 +18,5 @@ __pycache__/
 !/static/images/.gitkeep 
 !/static/imagesToSendBack/.gitkeep
 *.pkl
+
+nohup.out
