@@ -11,7 +11,7 @@ import sys
 import cnn_import_evaluate as cie
 
 
-def import_dataset(image_size):
+def CNN_import_dataset(image_size):
     # train_ds = tf.keras.utils.image_dataset_from_directory(
     #     './Training/', label_mode='binary', class_names=['No_Fire', 'Fire'], 
     #     seed=123, shuffle=True, image_size=image_size, validation_split=0.2, subset='training'
@@ -46,7 +46,7 @@ def import_dataset(image_size):
     return train_ds, validation_ds, test_ds
 
 
-def create_cnn_model(input_shape):
+def CNN_create_model(input_shape):
     # Creating a Sequential Model and adding the layers
     model = Sequential()
     model.add(Conv2D(10, 5, input_shape=input_shape))
@@ -68,31 +68,27 @@ def create_cnn_model(input_shape):
     return model
 
 
-def train(model, train_ds, validation_ds):
+def CNN_train(model, train_ds, validation_ds):
     model.fit(x=train_ds, validation_data=validation_ds, epochs=10)
     return model
-
-
-def save_model(model, path):
-    model.save_weights(path)
 
 
 def main():
 
     # setup
     image_size = (254, 254)
-    train_ds, validation_ds, test_ds = import_dataset(image_size)
+    train_ds, validation_ds, test_ds = CNN_import_dataset(image_size)
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
     # create
-    model = create_model(image_size + (3, ))
+    model = CNN_create_model(image_size + (3, ))
     model.summary()
 
     # train
-    model = train(model, train_ds, validation_ds)
+    model = CNN_train(model, train_ds, validation_ds)
 
     # evaluate
-    cie.evaluate(model, test_ds)
+    cie.CNN_evaluate(model, test_ds)
 
     # save
     model.save('./Models/weights/forest_fire_cnn.h5')

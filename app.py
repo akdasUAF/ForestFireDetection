@@ -13,7 +13,7 @@ from db_import_evaluate import *
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
 
-def autoEncoderPredict(image):
+def autoEncoderPredict(image, image_path):
     threshold = 66
     img_normalized = image.astype('float32') / 255.0
     img_normalized = np.expand_dims(img_normalized, axis=0)
@@ -31,16 +31,19 @@ def autoEncoderPredict(image):
     mse = np.mean(np.square(image - reconstructed_img_color))
     print(f"The mean squared error {mse}")
     
+    # Checks if there is an anomoly detected, if so, saves an image with the largest anomoly with it boxed
     if mse > threshold:
         print('Anomaly detected in the image!')
         max_mse_pixel = np.unravel_index(np.argmax(mse_pix), mse_pix.shape)
         print('Pixel with highest MSE:', max_mse_pixel)
-        circle_image = cv2.circle(image, (max_mse_pixel[0], max_mse_pixel[1]), radius=5, color=(0, 0, 255), thickness=2)
-        #cv2.imwrite(circle_output_file, circle_image)
-        return 1
+        square_buffer_size = 10
+        square_image = cv2.rectangle(image, (max_mse_pixel[0]-square_buffer_size, max_mse_pixel[1]+square_buffer_size), (max_mse_pixel[0]+square_buffer_size, max_mse_pixel[1]-square_buffer_size), color=(0, 0, 255), thickness=2)
+        square_image_path = image_path[:-4] + '_sq.png'
+        cv2.imwrite(square_image_path, square_image)
+        return 1, square_image_path
     else:
         print('No anomaly detected in the image.')
-        return 0
+        return 0, None
     
 def cnnPredict(image):
     image = np.array(image, dtype=np.float32)
@@ -55,12 +58,12 @@ def dbnPredict(image):
     return pred[0]
 
 # Creating and importing CNN
-cnnModel = create_model(image_size + (3, ))
-cnnModel = import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
+cnnModel = CNN_create_model(image_size + (3, ))
+cnnModel = CNN_import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
 
 # Creating and importing Autoencoder
-aeModel = create_autoencoder_model(image_size + (3, ))
-aeModel = import_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+aeModel = create_ae_model(image_size + (3, ))
+aeModel = import_ae_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
 
 # Creating and importing Deep Belief Network
 dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
@@ -92,18 +95,20 @@ def predict():
         class_idx = cnnPredict(resizedImage)
         # Assign Label
         class_label = class_labels[class_idx]
+        return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     elif modelToUse == "Autoencoder":
         # Predicting with Autoencoder
-        class_idx = autoEncoderPredict(resizedImage)
+        class_idx, square_image_path = autoEncoderPredict(resizedImage, image_path)
         # Assign Label
         class_label = class_labels[class_idx]
+        return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     elif modelToUse == "Deep Belief":
         # Predicting with CNN
         class_idx = dbnPredict(resizedImage)
         # Assign Label
         class_label = class_labels[class_idx]
+        return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     
-    return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port = 8000, debug = True)
