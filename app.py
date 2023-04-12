@@ -36,7 +36,8 @@ def autoEncoderPredict(image, image_path):
         print('Anomaly detected in the image!')
         max_mse_pixel = np.unravel_index(np.argmax(mse_pix), mse_pix.shape)
         print('Pixel with highest MSE:', max_mse_pixel)
-        square_image = cv2.rectangle(image, (max_mse_pixel[0]-1, max_mse_pixel[1]+1), (max_mse_pixel[0]+1, max_mse_pixel[1]-1), color=(0, 0, 255), thickness=2)
+        square_buffer_size = 10
+        square_image = cv2.rectangle(image, (max_mse_pixel[0]-square_buffer_size, max_mse_pixel[1]+square_buffer_size), (max_mse_pixel[0]+square_buffer_size, max_mse_pixel[1]-square_buffer_size), color=(0, 0, 255), thickness=2)
         square_image_path = image_path[:-4] + '_sq.png'
         cv2.imwrite(square_image_path, square_image)
         return 1, square_image_path
