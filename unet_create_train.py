@@ -67,41 +67,38 @@ def import_segmentation_dataset(image_size, batch_size):
 
 def create_unet_model(input_shape):
     
-    # Define the encoder layers
+    # Encoder 
     inputs = tf.keras.layers.Input(shape=input_shape, name="Input")
+    
     enc1 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv1')(inputs)
     pool1 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool1')(enc1)
-    enc2 = tf.keras.layers.Conv2D(filters=16, kernel_size=3, activation='relu', padding='same', name='Conv2')(pool1)
+    enc2 = tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation='relu', padding='same', name='Conv2')(pool1)
     pool2 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool2')(enc2)
-    enc3 = tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv3')(pool2)
+    enc3 = tf.keras.layers.Conv2D(filters=128, kernel_size=3, activation='relu', padding='same', name='Conv3')(pool2)
     pool3 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool3')(enc3)
     
-    # Define the decoder layers
-    dec1 = tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv4')(pool3)
+    # Decoder
+    dec1 = tf.keras.layers.Conv2D(filters=128, kernel_size=3, activation='relu', padding='same', name='Conv5')(pool3)
     up1 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up1')(dec1)
-    concat1 = tf.keras.layers.concatenate([enc1, up1], axis = 3)
-    dec2 = tf.keras.layers.Conv2D(filters=16, kernel_size=3, activation='relu', padding='same', name='Conv5')(concat1)
+    concat1 = tf.keras.layers.concatenate([enc3, up1], axis = 3, name='Concat1')
+    dec2 = tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation='relu', padding='same', name='Conv6')(concat1)
     up2 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up2')(dec2)
-    concat2 = tf.keras.layers.concatenate([enc2, up2], axis = 3)
-    dec3 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv6')(concat2)
+    up2_cropped = tf.keras.layers.Cropping2D(cropping=((1, 0), (1, 0)), name='Crop1')(up2)
+    concat2 = tf.keras.layers.concatenate([enc2, up2_cropped], axis = 3, name='Concat2')
+    dec3 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv7')(concat2)
     up3 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up3')(dec3)
-    concat3 = tf.keras.layers.concatenate([enc3, up3], axis = 3)
+    concat3 = tf.keras.layers.concatenate([enc1, up3], axis = 3, name='Concat3')
+    
     outputs = tf.keras.layers.Conv2D(filters=3, kernel_size=3, activation='sigmoid', padding='valid', name='Output')(concat3)
     
-    # In progress to convert above decoder with these layers - more efficient and cleaner
-    #tf.keras.layers.Conv2DTranspose(filters=8, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT1'),
-    #tf.keras.layers.Conv2DTranspose(filters=16, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT2'),
-    #tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT3'),
-    #tf.keras.layers.Conv2DTranspose(filters=3, kernel_size=3, activation='sigmoid', padding='same', name='Output')
+    # U-Net Model in total
+    unet = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='U-Net')
     
-    # Define autoencoder model using all layers 
-    autoencoder = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='Autoencoder')
-    
-    return autoencoder
+    return unet
 
-
+# Structural Similarity Index Measure loss function
 def ssim_loss(y_true, y_pred):
-    return 1 - image.ssim(y_true, y_pred, max_val=1.0)
+    return 1.0 - tf.reduce_mean(image.ssim(y_true, y_pred, max_val=1.0))
 
 
 def train(model, train_ds, validation_ds, epochs):
@@ -125,7 +122,7 @@ def main():
 
     # Build model and print the summary
     model.build((None, ) + image_shape)
-    plot_dir = f'D:/UAF/CS Capstone/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
+    plot_dir = f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/architectures/forest_fire_unet_{image_size[0]}x{image_size[1]}.png'
     plot_model(model, to_file=plot_dir, show_shapes=True)
     model.summary()
 

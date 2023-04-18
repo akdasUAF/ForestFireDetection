@@ -129,7 +129,7 @@ def import_segmentation_dataset(image_size, batch_size):
 
 def create_ae_model(input_shape):
     
-    # Define the encoder layers
+    # Encoder
     inputs = tf.keras.layers.Input(shape=input_shape, name="Input")
     enc1 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv1')(inputs)
     pool1 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool1')(enc1)
@@ -138,7 +138,7 @@ def create_ae_model(input_shape):
     enc3 = tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv3')(pool2)
     pool3 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool3')(enc3)
     
-    # Define the decoder layers
+    # Decoder
     dec1 = tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv4')(pool3)
     up1 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up1')(dec1)
     dec2 = tf.keras.layers.Conv2D(filters=16, kernel_size=3, activation='relu', padding='same', name='Conv5')(up1)
@@ -153,12 +153,12 @@ def create_ae_model(input_shape):
     #tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT3'),
     #tf.keras.layers.Conv2DTranspose(filters=3, kernel_size=3, activation='sigmoid', padding='same', name='Output')
     
-    # Define autoencoder model using all layers 
+    # Autoencoder model using all layers 
     autoencoder = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='Autoencoder')
     
     return autoencoder
 
-
+# Structural Similarity Index Measure loss function
 def ssim_loss(y_true, y_pred):
     return 1 - image.ssim(y_true, y_pred, max_val=1.0)
 
