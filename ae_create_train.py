@@ -129,7 +129,7 @@ def import_segmentation_dataset(image_size, batch_size):
 
 def create_ae_model(input_shape):
     
-    # Define the encoder layers
+    # Encoder
     inputs = tf.keras.layers.Input(shape=input_shape, name="Input")
     enc1 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv1')(inputs)
     pool1 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool1')(enc1)
@@ -138,7 +138,7 @@ def create_ae_model(input_shape):
     enc3 = tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv3')(pool2)
     pool3 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same', name='MaxPool3')(enc3)
     
-    # Define the decoder layers
+    # Decoder
     dec1 = tf.keras.layers.Conv2D(filters=8, kernel_size=3, activation='relu', padding='same', name='Conv4')(pool3)
     up1 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up1')(dec1)
     dec2 = tf.keras.layers.Conv2D(filters=16, kernel_size=3, activation='relu', padding='same', name='Conv5')(up1)
@@ -153,12 +153,12 @@ def create_ae_model(input_shape):
     #tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides = (2, 2), activation='relu', padding='same', name='ConvT3'),
     #tf.keras.layers.Conv2DTranspose(filters=3, kernel_size=3, activation='sigmoid', padding='same', name='Output')
     
-    # Define autoencoder model using all layers 
+    # Autoencoder model using all layers 
     autoencoder = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='Autoencoder')
     
     return autoencoder
 
-
+# Structural Similarity Index Measure loss function
 def ssim_loss(y_true, y_pred):
     return 1 - image.ssim(y_true, y_pred, max_val=1.0)
 
@@ -184,7 +184,7 @@ def main():
 
     # Build model and print the summary
     model.build((None, ) + image_shape)
-    plot_dir = f'D:/UAF/CS Capstone/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
+    plot_dir = f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
     plot_model(model, to_file=plot_dir, show_shapes=True)
     model.summary()
 
@@ -192,18 +192,20 @@ def main():
     optimizer = 'adam'
     loss_function_name = 'ssim'
     loss_function = ssim_loss
-    epochs = 10
+    metrics = ['accuracy']
+    epochs = 5
     
     # Train
-    model.compile(optimizer=optimizer, loss=loss_function)
+    model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
     model = train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
 
     # Save
-    model.save(f'D:/UAF/CS Capstone/Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
+    model.save(f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
     # Evaluate
     test_loss = model.evaluate(no_fire_test_ds)
-    print('Test Loss: {:.2f}'.format(test_loss))
+    print('Test Loss: {:.2f}'.format(test_loss[0]))
+    print('Test Accuracy: {:.2f}'.format(test_loss[1]))
 
     return 0
 

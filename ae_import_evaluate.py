@@ -33,7 +33,7 @@ def main():
     optimizer = 'adam'
     loss_function_name = 'ssim'
     loss_function = aect.ssim_loss
-    epochs = 10
+    epochs = 5
     model.compile(optimizer=optimizer, loss=loss_function)
     model = import_ae_model(model, f'./Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
@@ -70,8 +70,8 @@ def main():
         print(f"Starting {list_names[i]} list: \n")
         for image in list:
             # Output dirs
-            recon_output_file = os.path.join("./Local_Testing/reconstructed_and_circle/", image[35:-4] + f"_recon_{list_names[i]}.jpg")
-            circle_output_file = os.path.join("./Local_Testing/reconstructed_and_circle/", image[35:-4] + f"_recon_circle_{list_names[i]}.jpg")
+            recon_output_file = os.path.join("./Local_Testing/reconstructed_and_outline/ae/", image[35:-4] + f"_recon_{list_names[i]}.jpg")
+            square_image_path = os.path.join("./Local_Testing/reconstructed_and_outline/ae/", image[35:-4] + f"_recon_square_{list_names[i]}.jpg")
             # Read Image
             img = cv2.imread(image)
             print(f"{list_names[i]}_image shape: {img.shape}")
@@ -84,7 +84,6 @@ def main():
             print(f"reconstructed_{list_names[i]}_img shape: {reconstructed_img.shape}")
             # Reconstruct and save image
             reconstructed_img_color = np.clip(reconstructed_img * 255.0, 0, 255).astype('uint8')
-            reconstructed_img_color = cv2.cvtColor(reconstructed_img_color, cv2.COLOR_BGR2RGB)
             cv2.imwrite(recon_output_file, reconstructed_img_color)
             # Calculate Error
             mse_pix = np.mean(np.square(img - reconstructed_img_color), axis=-1)
@@ -94,8 +93,9 @@ def main():
                 print('Anomaly detected in the image!')
                 max_mse_pixel = np.unravel_index(np.argmax(mse_pix), mse_pix.shape)
                 print('Pixel with highest MSE:', max_mse_pixel)
-                circle_image = cv2.circle(img, (max_mse_pixel[0], max_mse_pixel[1]), radius=5, color=(0, 0, 255), thickness=2)
-                cv2.imwrite(circle_output_file, circle_image)
+                square_buffer_size = 10
+                square_image = cv2.rectangle(img, (max_mse_pixel[0]-square_buffer_size, max_mse_pixel[1]+square_buffer_size), (max_mse_pixel[0]+square_buffer_size, max_mse_pixel[1]-square_buffer_size), color=(0, 0, 255), thickness=2)
+                cv2.imwrite(square_image_path, square_image)
             else:
                 print('No anomaly detected in the image.')
 

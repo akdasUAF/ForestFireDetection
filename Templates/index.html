@@ -11,18 +11,12 @@
         <form class="p-3 text-center" action="/" method="post" enctype="multipart/form-data">
             <input required id="imageInput" class="form-control btn btn-primary mt-3" type="file" name="imageFile">
             <div>
-                <select required name="modelOptions">
-                    {% for model in listOfModels %}
-                        {% if modelToUse == model.name %}
-                        <option selected value="{{model.name}}">{{model.name}}</option>
-                        {% else %}
-                        <option value="{{model.name}}">{{model.name}}</option>
-                        {% endif %}
-                        
-                    {% endfor %}
-                </select>
-                <input id="submitButton" class="btn btn-primary mt-3" type="submit" value="Check for Fire">
+                {% for model in listOfModels %}
+                    <input required type="radio" id="{{ model.name }}" name="modelOptions" value="{{ model.name }}" {% if modelToUse == model.name %}checked{% endif %}>
+                    <label for="{{ model.name }}">{{ model.name }}</label>
+                {% endfor %}
             </div>
+            <input id="submitButton" class="btn btn-primary mt-3" type="submit" value="Check for Fire">
         </form>
 
         {% if prediction %}
