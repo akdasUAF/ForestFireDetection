@@ -52,7 +52,7 @@ def segmentationPredict(model, image, image_path):
         return 1, square_image_path
     else:
         print('No anomaly detected in the image.')
-        return 0, None
+        return 0, image_path
     
 def cnnPredict(image):
     image = np.array(image, dtype=np.float32)
@@ -114,7 +114,7 @@ def predict():
         class_idx, square_image_path = segmentationPredict('ae', resizedImage, image_path)
         # Assign Label
         class_label = class_labels[class_idx]
-        return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
+        return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     elif modelToUse == "Deep Belief":
         # Predicting with CNN
         class_idx = dbnPredict(resizedImage)
