@@ -9,22 +9,31 @@ from cnn_import_evaluate import *
 from ae_create_train import *
 from ae_import_evaluate import *
 from db_import_evaluate import *
+from unet_create_train import *
+from unet_import_evaluate import *
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
 
-def autoEncoderPredict(image, image_path):
-    threshold = 66
+def segmentationPredict(model, image, image_path):
+    ae_threshold = 66
+    unet_threshold = 20
     img_normalized = image.astype('float32') / 255.0
     img_normalized = np.expand_dims(img_normalized, axis=0)
     
     # Use model to reconstruct and remove batch dimension
-    reconstructed_img = aeModel.predict(img_normalized)
+    if model == 'ae':
+        reconstructed_img = aeModel.predict(img_normalized)
+    elif model == 'unet':
+        reconstructed_img = unetModel.predict(img_normalized)
+    else:
+        print("FATAL ERROR: segmentationPredict model does not exist")
     reconstructed_img = reconstructed_img[0]
     
     # Reconstruct and save image
     reconstructed_img_color = np.clip(reconstructed_img * 255.0, 0, 255).astype('uint8')
-    reconstructed_img_color = cv2.cvtColor(reconstructed_img_color, cv2.COLOR_BGR2RGB)
+    #recon_output_file_path = image_path[:-4] + '_reconstructed.png'
+    #cv2.imwrite(recon_output_file_path, reconstructed_img_color)
     
     # Calculate Error
     mse_pix = np.mean(np.square(image - reconstructed_img_color), axis=-1)
@@ -32,7 +41,7 @@ def autoEncoderPredict(image, image_path):
     print(f"The mean squared error {mse}")
     
     # Checks if there is an anomoly detected, if so, saves an image with the largest anomoly with it boxed
-    if mse > threshold:
+    if mse > ae_threshold or mse > unet_threshold:
         print('Anomaly detected in the image!')
         max_mse_pixel = np.unravel_index(np.argmax(mse_pix), mse_pix.shape)
         print('Pixel with highest MSE:', max_mse_pixel)
@@ -63,12 +72,16 @@ cnnModel = CNN_import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
 
 # Creating and importing Autoencoder
 aeModel = create_ae_model(image_size + (3, ))
-aeModel = import_ae_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_10.h5')
+aeModel = import_ae_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_5.h5')
 
 # Creating and importing Deep Belief Network
 dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
 
-listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbModel}]
+# Creating and importing U-Net
+unetModel = create_unet_model(image_size + (3, ))
+unetModel = import_unet_model(unetModel, f'Models/weights/forest_fire_unet_254x254_adam_ssim_5.h5')
+
+listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbModel}, {'name': 'U-Net', 'model' : unetModel}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -98,7 +111,7 @@ def predict():
         return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     elif modelToUse == "Autoencoder":
         # Predicting with Autoencoder
-        class_idx, square_image_path = autoEncoderPredict(resizedImage, image_path)
+        class_idx, square_image_path = segmentationPredict('ae', resizedImage, image_path)
         # Assign Label
         class_label = class_labels[class_idx]
         return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
@@ -108,7 +121,12 @@ def predict():
         # Assign Label
         class_label = class_labels[class_idx]
         return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
-    
+    elif modelToUse == "U-Net":
+        # Predicting with Autoencoder
+        class_idx, square_image_path = segmentationPredict('unet', resizedImage, image_path)
+        # Assign Label
+        class_label = class_labels[class_idx]
+        return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port = 8000, debug = True)

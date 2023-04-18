@@ -184,7 +184,7 @@ def main():
 
     # Build model and print the summary
     model.build((None, ) + image_shape)
-    plot_dir = f'D:/UAF/CS Capstone/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
+    plot_dir = f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/architectures/forest_fire_ae_{image_size[0]}x{image_size[1]}.png'
     plot_model(model, to_file=plot_dir, show_shapes=True)
     model.summary()
 
@@ -192,18 +192,20 @@ def main():
     optimizer = 'adam'
     loss_function_name = 'ssim'
     loss_function = ssim_loss
-    epochs = 10
+    metrics = ['accuracy']
+    epochs = 5
     
     # Train
-    model.compile(optimizer=optimizer, loss=loss_function)
+    model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
     model = train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
 
     # Save
-    model.save(f'D:/UAF/CS Capstone/Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
+    model.save(f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
     # Evaluate
     test_loss = model.evaluate(no_fire_test_ds)
-    print('Test Loss: {:.2f}'.format(test_loss))
+    print('Test Loss: {:.2f}'.format(test_loss[0]))
+    print('Test Accuracy: {:.2f}'.format(test_loss[1]))
 
     return 0
 
