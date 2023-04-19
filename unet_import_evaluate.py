@@ -62,7 +62,7 @@ def main():
     fire_database_dir_list = gb.glob(fire_database_dir)
     no_fire_database_dir_list = gb.glob(no_fire_database_dir)
     
-    threshold = 45
+    threshold = 15
     
     fire_and_nofire_test_image_lists = [fire_database_dir_list, no_fire_database_dir_list]
     list_names = ["fire", "no_fire"]

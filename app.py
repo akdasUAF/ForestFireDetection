@@ -17,7 +17,7 @@ image_size = (254, 254)
 
 def segmentationPredict(model, image, image_path):
     ae_threshold = 66
-    unet_threshold = 20
+    unet_threshold = 15
     img_normalized = image.astype('float32') / 255.0
     img_normalized = np.expand_dims(img_normalized, axis=0)
     
