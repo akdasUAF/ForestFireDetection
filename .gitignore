@@ -16,6 +16,9 @@ __pycache__/
 
 /Models/weights/dbn_pipeline_model.joblib
 
+/yolov5
+/dataset
+
 # exception to the rule
 !/static/images/.gitkeep 
 !/static/imagesToSendBack/.gitkeep
