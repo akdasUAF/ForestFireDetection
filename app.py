@@ -11,6 +11,7 @@ from ae_import_evaluate import *
 from db_import_evaluate import *
 from unet_create_train import *
 from unet_import_evaluate import *
+import torch
 
 app = Flask(__name__, template_folder='Templates')
 image_size = (254, 254)
@@ -66,6 +67,28 @@ def dbnPredict(image):
     pred = dbModel.predict(image)
     return pred[0]
 
+def yoloPredict(image):
+    result = yoloModel(image)
+    result.save()
+
+    # get most recent image result
+    base_img_path = 'runs/detect/'
+    dirs = os.listdir(base_img_path)
+    nums = [int(d[3:]) for d in dirs if d[3:].isdigit()]
+    if len(nums) == 0:
+        highest = ''
+    else:
+        highest = max(nums)
+        print(highest)
+    path = f'{base_img_path}exp{highest}/image0.jpg'
+    newpath = f'static/imagesToSendBack/yolo{highest}.jpg'
+    
+    print(os.listdir(os.path.dirname(path)))
+    print(os.listdir(os.path.dirname(newpath)))
+    os.rename(path, newpath)
+
+    return int(len(result.xyxy[0]) > 0), newpath
+
 # Creating and importing CNN
 cnnModel = CNN_create_model(image_size + (3, ))
 cnnModel = CNN_import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
@@ -81,7 +104,14 @@ dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
 unetModel = create_unet_model(image_size + (3, ))
 unetModel = import_unet_model(unetModel, f'Models/weights/forest_fire_unet_254x254_adam_ssim_5.h5')
 
-listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, {'name': 'Autoencoder', 'model' : aeModel}, {'name': 'Deep Belief', 'model' : dbModel}, {'name': 'U-Net', 'model' : unetModel}]
+# Importing yolo
+yoloModel = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5/runs/train/exp9/weights/best.pt', force_reload=True)
+
+listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, 
+                {'name': 'Autoencoder', 'model' : aeModel}, 
+                {'name': 'Deep Belief', 'model' : dbModel}, 
+                {'name': 'U-Net', 'model' : unetModel},
+                {'name': 'YOLO', 'model' : yoloModel}]
 
 @app.route('/', methods = ['GET'])
 def hello_world():
@@ -127,6 +157,10 @@ def predict():
         # Assign Label
         class_label = class_labels[class_idx]
         return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
+    elif modelToUse == 'YOLO':
+        class_idx, yolo_image_path = yoloPredict(resizedImage)
+        class_label = class_labels[class_idx]
+        return render_template("index.html", prediction = class_label, img = yolo_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port = 8000, debug = True)
+    app.run(host="0.0.0.0", port = 8001, debug = True)
