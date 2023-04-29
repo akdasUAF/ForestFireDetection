@@ -18,7 +18,7 @@ image_size = (254, 254)
 
 def segmentationPredict(model, image, image_path):
     ae_threshold = 66
-    unet_threshold = 20
+    unet_threshold = 15
     img_normalized = image.astype('float32') / 255.0
     img_normalized = np.expand_dims(img_normalized, axis=0)
     
@@ -128,7 +128,7 @@ def predict():
         class_idx, square_image_path = segmentationPredict('ae', resizedImage, image_path)
         # Assign Label
         class_label = class_labels[class_idx]
-        return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
+        return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     elif modelToUse == "Deep Belief":
         # Predicting with CNN
         class_idx = dbnPredict(resizedImage)
