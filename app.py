@@ -69,7 +69,9 @@ def dbnPredict(image):
 
 def yoloPredict(image):
     result = yoloModel(image)
-    return int(len(result.xyxy[0]) > 0)
+    result.save()
+    path = './runs/detect/exp/image0.jpg'
+    return int(len(result.xyxy[0]) > 0), path
 
 # Creating and importing CNN
 cnnModel = CNN_create_model(image_size + (3, ))
@@ -140,9 +142,9 @@ def predict():
         class_label = class_labels[class_idx]
         return render_template("index.html", prediction = class_label, img = square_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
     elif modelToUse == 'YOLO':
-        class_idx = yoloPredict(resizedImage)
+        class_idx, yolo_image_path = yoloPredict(resizedImage)
         class_label = class_labels[class_idx]
-        return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)
+        return render_template("index.html", prediction = class_label, img = yolo_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port = 8001, debug = True)
