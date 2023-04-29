@@ -70,8 +70,24 @@ def dbnPredict(image):
 def yoloPredict(image):
     result = yoloModel(image)
     result.save()
-    path = './runs/detect/exp/image0.jpg'
-    return int(len(result.xyxy[0]) > 0), path
+
+    # get most recent image result
+    base_img_path = 'runs/detect/'
+    dirs = os.listdir(base_img_path)
+    nums = [int(d[3:]) for d in dirs if d[3:].isdigit()]
+    if len(nums) == 0:
+        highest = ''
+    else:
+        highest = max(nums)
+        print(highest)
+    path = f'{base_img_path}exp{highest}/image0.jpg'
+    newpath = f'static/imagesToSendBack/yolo{highest}.jpg'
+    
+    print(os.listdir(os.path.dirname(path)))
+    print(os.listdir(os.path.dirname(newpath)))
+    os.rename(path, newpath)
+
+    return int(len(result.xyxy[0]) > 0), newpath
 
 # Creating and importing CNN
 cnnModel = CNN_create_model(image_size + (3, ))
