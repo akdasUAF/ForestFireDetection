@@ -20,6 +20,8 @@ If you get warnings, you may need to add the following line to your .bashrc file
 
 `git clone git@github.com:akdasUAF/ForestFireDetection.git`
 
+If you do not have access to the repository from your command line, but your github account does have access, then follow the instructions at [this link](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to set up ssh keys to provide access. Then, run the `git clone` command again.
+
 Then, download the two files in [this google drive folder](https://drive.google.com/drive/folders/1aJDFIOFEKJhqdWJ3Ss87bVHyjHAvJaie?usp=sharing) (these are too large for github to accept, and one contains another git repo) and move them into the repo directory. Then extract them using
 ```
 gunzip yolov5.tar.gz
