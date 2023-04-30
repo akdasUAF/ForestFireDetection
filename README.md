@@ -2,6 +2,7 @@
 
 The aim of this project is to create neural network models for forest Fire detection using Flask and TensorFlow, and integrate them into a website for convenient use.
 > Note: This code is not optimized for production enviroment.
+
 For documentation of the code in this repository, please see the Wiki. See below for instructions to install and run the web server.
 
 # Requirements
