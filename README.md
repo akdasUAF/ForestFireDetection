@@ -40,6 +40,9 @@ Then, close and re-open your terminal or server connection, or just run
 
 `source ~/.bashrc`
 
+# Create DBN model files
+`python3 db_create_train.py`
+
 # How to run
-`python -m flask run`
+`python3 -m flask run`
  
