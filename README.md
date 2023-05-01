@@ -32,6 +32,14 @@ If you get warnings, you may need to add the following line to your .bashrc file
 
 `export PATH="/home/$USER/.local/bin:$PATH"`
 
+To do this, run
+
+`echo 'export PATH="/home/$USER/.local/bin:$PATH"' >> ~/.bashrc`
+
+Then, close and re-open your terminal or server connection, or just run
+
+`source ~/.bashrc`
+
 # How to run
 `python -m flask run`
  
