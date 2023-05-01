@@ -44,5 +44,10 @@ Then, close and re-open your terminal or server connection, or just run
 `source ~/.bashrc`
 
 # How to run
-`python3 -m flask run`
- 
+To run the web server, just do:
+
+`python3 app.py`
+
+If you want it to run persistantly (staying up after you close your terminal connection) do:
+
+`nohup python3 app.py &`
