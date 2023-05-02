@@ -10,23 +10,17 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D, UpSampling2D, Activation
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import sys
-#import ae_import_evaluate as aeie
 
-# Tensorflow configuration settings
-#tf.config.experimental_run_functions_eagerly(True)
-#gpu_devices = tf.config.experimental.list_physical_devices('GPU')
-#tf.config.experimental.set_memory_growth(gpu_devices[0], True)
-
-def import_classification_datasets(image_size, batch_size):
+def import_classification_dataset(image_size, batch_size):
     
     # Create an ImageDataGenerator to load the images
     image_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
     test_image_datagen = ImageDataGenerator(rescale=1/255)
     
-    no_fire_train_dir   = 'D:/UAF/CS Capstone/Datasets/No_Fire_Images/Training/'
-    no_fire_test_dir    = 'D:/UAF/CS Capstone/Datasets/No_Fire_Images/Training/'
-    fire_train_dir      = 'D:/UAF/CS Capstone/Datasets/Fire_Images/Training/'
-    fire_test_dir       = 'D:/UAF/CS Capstone/Datasets/Fire_Images/Test/'
+    no_fire_train_dir   = './No_Fire_Images/Training/'
+    no_fire_test_dir    = './No_Fire_Images/Test/'
+    fire_train_dir      = './Fire_Images/Training/'
+    fire_test_dir       = './Fire_Images/Test/'
     
     ### No Fire Datasets ###
     no_fire_train_ds = image_datagen.flow_from_directory(
@@ -78,54 +72,6 @@ def import_classification_datasets(image_size, batch_size):
 
     return no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds
 
-def import_segmentation_dataset(image_size, batch_size):
-    
-    # Create an ImageDataGenerator to load the images
-    image_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
-    mask_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
-    
-    image_dir = 'D:/UAF/CS Capstone/Datasets/Segmentation/Images'
-    mask_dir = 'D:/UAF/CS Capstone/Datasets/Segmentation/Masks'
-    
-    ### Image Datasets ###
-    image_train_ds = image_datagen.flow_from_directory(
-        image_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode=None,
-        shuffle=True,
-        subset='training')
-    
-    image_val_ds = image_datagen.flow_from_directory(
-        image_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode=None,
-        shuffle=True,
-        subset='validation')
-    
-    ### Masks Datasets ###
-    mask_train_ds = mask_datagen.flow_from_directory(
-        mask_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode=None,
-        shuffle=True,
-        subset='training')
-    
-    mask_val_ds = mask_datagen.flow_from_directory(
-        mask_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode=None,
-        shuffle=True,
-        subset='validation')
-
-    train_ds = zip(image_train_ds, mask_train_ds)
-    val_ds = zip(image_val_ds, mask_val_ds)
-
-    return train_ds, val_ds
-
 
 def create_ae_model(input_shape):
     
@@ -158,12 +104,13 @@ def create_ae_model(input_shape):
     
     return autoencoder
 
+
 # Structural Similarity Index Measure loss function
 def ssim_loss(y_true, y_pred):
     return 1 - image.ssim(y_true, y_pred, max_val=1.0)
 
 
-def train(model, train_ds, validation_ds, epochs):
+def ae_train(model, train_ds, validation_ds, epochs):
     model.fit(train_ds, validation_data=validation_ds, epochs=epochs)
     return model
 
@@ -171,10 +118,11 @@ def train(model, train_ds, validation_ds, epochs):
 def main():
 
     # Train Setup
-    image_size = (254, 254)    #image_size = (3480, 2160) # Change padding on the last layer in the decoder to 'same' when doing 4K images
-    batch_size = 32            #batch_size = 4 
-    no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = import_classification_datasets(image_size, batch_size)
-    #train_ds, val_ds = import_segmentation_dataset(image_size, batch_size)
+    image_size = (254, 254)
+    batch_size = 32
+    no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = import_classification_dataset(image_size, batch_size)
+    
+    # Check for available GPUs
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
     print(tf.config.list_physical_devices('GPU'))
 
@@ -192,12 +140,12 @@ def main():
     optimizer = 'adam'
     loss_function_name = 'ssim'
     loss_function = ssim_loss
+    epochs = 10
     metrics = ['accuracy']
-    epochs = 5
     
     # Train
     model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
-    model = train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
+    model = ae_train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
 
     # Save
     model.save(f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/weights/forest_fire_ae_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')

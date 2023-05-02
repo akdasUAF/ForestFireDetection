@@ -7,16 +7,17 @@ import sys
 import tensorflow as tf
 import cv2
 import numpy as np
-import ae_create_train as aect
 import glob as gb
 import os
+import ae_create_train as aect
 
 
 def import_ae_model(model, path):
     model.load_weights(path)
     return model
 
-def evaluate(model, dataset):
+
+def ae_evaluate(model, dataset):
     model.evaluate(x=dataset)
 
 
@@ -24,7 +25,7 @@ def main():
     # Setup
     image_size = (254, 254)
     batch_size = 32
-    no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = aect.import_classification_datasets(image_size, batch_size)
+    no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = aect.import_classification_dataset(image_size, batch_size)
     image_shape = image_size + (3, )
     model = aect.create_ae_model(image_shape)
     model.build((None, ) + image_shape)

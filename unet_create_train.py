@@ -170,12 +170,13 @@ def train(model, train_ds, validation_ds, epochs):
 def main():
 
     # Train Setup
-    #image_size = (3480, 2160)   # Delete cropped layer to make this dimensionally fit
     image_size = (254, 254)     
-    #batch_size = 1
-    batch_size = 16            
+    batch_size = 16
     no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = import_classification_datasets(image_size, batch_size)
+    #image_size = (3480, 2160), #batch_size = 1, for segmentation dataset   # Delete cropped layer to make this dimensionally fit
     #train_ds, val_ds = import_segmentation_dataset(image_size, batch_size)
+    
+    # Check for available GPUs
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
     print(tf.config.list_physical_devices('GPU'))
 
@@ -193,8 +194,8 @@ def main():
     optimizer = 'adam'
     loss_function_name = 'ssim'
     loss_function = ssim_loss
-    metrics = ['accuracy']
     epochs = 5
+    metrics = ['accuracy']
     
     # Train
     model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
