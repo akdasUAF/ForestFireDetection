@@ -11,10 +11,6 @@ from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import sys
 
-# Tensorflow configuration settings
-#tf.config.experimental_run_functions_eagerly(True)
-#gpu_devices = tf.config.experimental.list_physical_devices('GPU')
-#tf.config.experimental.set_memory_growth(gpu_devices[0], True)
 
 def import_classification_datasets(image_size, batch_size):
     
@@ -76,6 +72,7 @@ def import_classification_datasets(image_size, batch_size):
         color_mode='rgb')
 
     return no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds
+
 
 def import_segmentation_dataset(image_size, batch_size):
     
@@ -157,12 +154,13 @@ def create_unet_model(input_shape):
     
     return unet
 
+
 # Structural Similarity Index Measure loss function
 def ssim_loss(y_true, y_pred):
     return 1.0 - tf.reduce_mean(image.ssim(y_true, y_pred, max_val=1.0))
 
 
-def train(model, train_ds, validation_ds, epochs):
+def unet_train(model, train_ds, validation_ds, epochs):
     model.fit(train_ds, validation_data=validation_ds, epochs=epochs)
     return model
 
@@ -199,7 +197,7 @@ def main():
     
     # Train
     model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
-    model = train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
+    model = unet_train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
 
     # Save
     model.save(f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/weights/forest_fire_unet_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')

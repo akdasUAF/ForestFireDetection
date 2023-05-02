@@ -7,16 +7,17 @@ import sys
 import tensorflow as tf
 import cv2
 import numpy as np
-import unet_create_train as unetct
 import glob as gb
 import os
+import unet_create_train as unetct
 
 
 def import_unet_model(model, path):
     model.load_weights(path)
     return model
 
-def evaluate(model, dataset):
+
+def unet_evaluate(model, dataset):
     model.evaluate(x=dataset)
 
 
@@ -25,7 +26,6 @@ def main():
     image_size = (254, 254)
     batch_size = 16
     no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = unetct.import_classification_datasets(image_size, batch_size)
-    #train_ds, val_ds = unetct.import_segmentation_dataset(image_size, batch_size)
     image_shape = image_size + (3, )
     model = unetct.create_unet_model(image_shape)
     model.build((None, ) + image_shape)
@@ -43,18 +43,18 @@ def main():
 
     # Evaluate
     print("Performance on Non-Fire Training Data:")
-    evaluate(model, no_fire_train_ds)
+    unet_evaluate(model, no_fire_train_ds)
     print("Performance on Non-Fire Validation Data:")
-    evaluate(model, no_fire_validation_ds)
+    unet_evaluate(model, no_fire_validation_ds)
     print("Performance on Non-Fire Test Data:")
-    evaluate(model, no_fire_test_ds)
+    unet_evaluate(model, no_fire_test_ds)
     
     print("Performance on Fire Training Data:")
-    evaluate(model, fire_train_ds)
+    unet_evaluate(model, fire_train_ds)
     print("Performance on Fire Validation Data:")
-    evaluate(model, fire_validation_ds)
+    unet_evaluate(model, fire_validation_ds)
     print("Performance on Fire Test Data:")
-    evaluate(model, fire_test_ds)
+    unet_evaluate(model, fire_test_ds)
     
     # Test a no_fire and fire image
     fire_database_dir = './Local_Testing/Sample Images/Fire/*.jpg'
@@ -99,6 +99,7 @@ def main():
                 cv2.imwrite(square_image_path, square_image)
             else:
                 print('No anomaly detected in the image.')
+
 
 if __name__ == '__main__':
     sys.exit(main())
