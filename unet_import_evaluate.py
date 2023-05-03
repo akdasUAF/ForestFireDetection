@@ -26,6 +26,7 @@ def main():
     image_size = (254, 254)
     batch_size = 16
     no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = unetct.import_classification_datasets(image_size, batch_size)
+    #train_ds, val_ds = unetct.import_segmentation_dataset(image_size, batch_size)
     image_shape = image_size + (3, )
     model = unetct.create_unet_model(image_shape)
     model.build((None, ) + image_shape)

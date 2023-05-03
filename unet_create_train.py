@@ -12,68 +12,6 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import sys
 
 
-def import_classification_datasets(image_size, batch_size):
-    
-    # Create an ImageDataGenerator to load the images
-    image_datagen = ImageDataGenerator(rescale=1/255, validation_split=0.2)
-    test_image_datagen = ImageDataGenerator(rescale=1/255)
-    
-    no_fire_train_dir   = 'D:/UAF/CS Capstone/Datasets/No_Fire_Images/Training/'
-    no_fire_test_dir    = 'D:/UAF/CS Capstone/Datasets/No_Fire_Images/Training/'
-    fire_train_dir      = 'D:/UAF/CS Capstone/Datasets/Fire_Images/Training/'
-    fire_test_dir       = 'D:/UAF/CS Capstone/Datasets/Fire_Images/Test/'
-    
-    ### No Fire Datasets ###
-    no_fire_train_ds = image_datagen.flow_from_directory(
-        no_fire_train_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode='input',
-        color_mode='rgb',
-        subset='training')
-    
-    no_fire_validation_ds = image_datagen.flow_from_directory(
-        no_fire_test_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode='input',
-        color_mode='rgb',
-        subset='validation')
-    
-    no_fire_test_ds = test_image_datagen.flow_from_directory(
-        no_fire_test_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode='input',
-        color_mode='rgb')
-    
-    ### Fire Datasets ###
-    fire_train_ds = image_datagen.flow_from_directory(
-        fire_train_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode='input',
-        color_mode='rgb',
-        subset='training')
-    
-    fire_validation_ds = image_datagen.flow_from_directory(
-        fire_train_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode='input',
-        color_mode='rgb',
-        subset='validation')
-    
-    fire_test_ds = test_image_datagen.flow_from_directory(
-        fire_test_dir,
-        target_size=image_size,
-        batch_size=batch_size,
-        class_mode='input',
-        color_mode='rgb')
-
-    return no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds
-
-
 def import_segmentation_dataset(image_size, batch_size):
     
     # Create an ImageDataGenerator to load the images
@@ -120,8 +58,6 @@ def import_segmentation_dataset(image_size, batch_size):
     train_ds = zip(image_train_ds, mask_train_ds)
     val_ds = zip(image_val_ds, mask_val_ds)
 
-    return train_ds, val_ds
-
 
 def create_unet_model(input_shape):
     
@@ -141,13 +77,12 @@ def create_unet_model(input_shape):
     concat1 = tf.keras.layers.concatenate([enc3, up1], axis = 3, name='Concat1')
     dec2 = tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation='relu', padding='same', name='Conv6')(concat1)
     up2 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up2')(dec2)
-    up2_cropped = tf.keras.layers.Cropping2D(cropping=((1, 0), (1, 0)), name='Crop1')(up2)
-    concat2 = tf.keras.layers.concatenate([enc2, up2_cropped], axis = 3, name='Concat2')
+    concat2 = tf.keras.layers.concatenate([enc2, up2], axis = 3, name='Concat2')
     dec3 = tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', padding='same', name='Conv7')(concat2)
     up3 = tf.keras.layers.UpSampling2D(size=(2, 2), name='Up3')(dec3)
     concat3 = tf.keras.layers.concatenate([enc1, up3], axis = 3, name='Concat3')
     
-    outputs = tf.keras.layers.Conv2D(filters=3, kernel_size=3, activation='sigmoid', padding='same', name='Output')(concat3)
+    outputs = tf.keras.layers.Conv2D(filters=1, kernel_size=3, activation='sigmoid', padding='same', name='Output')(concat3)
     
     # U-Net Model in total
     unet = tf.keras.models.Model(inputs=inputs, outputs=outputs, name='U-Net')
@@ -168,13 +103,9 @@ def unet_train(model, train_ds, validation_ds, epochs):
 def main():
 
     # Train Setup
-    image_size = (254, 254)     
-    batch_size = 16
-    no_fire_train_ds, no_fire_validation_ds, no_fire_test_ds, fire_train_ds, fire_validation_ds, fire_test_ds = import_classification_datasets(image_size, batch_size)
-    #image_size = (3480, 2160), #batch_size = 1, for segmentation dataset   # Delete cropped layer to make this dimensionally fit
-    #train_ds, val_ds = import_segmentation_dataset(image_size, batch_size)
-    
-    # Check for available GPUs
+    image_size = (3480, 2160)
+    batch_size = 8
+    train_ds, val_ds = import_segmentation_dataset(image_size, batch_size)
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
     print(tf.config.list_physical_devices('GPU'))
 
@@ -184,8 +115,7 @@ def main():
 
     # Build model and print the summary
     model.build((None, ) + image_shape)
-    plot_dir = f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/architectures/forest_fire_unet_{image_size[0]}x{image_size[1]}.png'
-    plot_model(model, to_file=plot_dir, show_shapes=True)
+    plot_dir = f'./Models/architectures/forest_fire_unet_{image_size[0]}x{image_size[1]}.png'
     model.summary()
 
     # Define hyperparameters
@@ -197,13 +127,13 @@ def main():
     
     # Train
     model.compile(optimizer=optimizer, loss=loss_function, metrics=metrics)
-    model = unet_train(model, no_fire_train_ds, no_fire_validation_ds, epochs)
+    model = unet_train(model, train_ds, val_ds, epochs)
 
     # Save
-    model.save(f'C:/Users/Hunter/Desktop/Spring 2023/CS Capstone/GitHub/ForestFireDetection/Models/weights/forest_fire_unet_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
+    model.save(f'./Models/weights/forest_fire_unet_{image_size[0]}x{image_size[1]}_{optimizer}_{loss_function_name}_{epochs}.h5')
 
     # Evaluate
-    test_loss = model.evaluate(no_fire_test_ds)
+    test_loss = model.evaluate(train_ds)
     print('Test Loss: {:.2f}'.format(test_loss[0]))
     print('Test Accuracy: {:.2f}'.format(test_loss[1]))
 
