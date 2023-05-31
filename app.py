@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 
 import cv2
+import time
+import psutil
 
 import tensorflow as tf
 import numpy as np
@@ -136,6 +138,23 @@ def predict():
     if modelToUse == "CNN 99%":
         # Predicting with CNN
         class_idx = cnnPredict(resizedImage)
+
+        # Check inference time
+        start_time = time.time()
+        print("--- CNN Detect Inference time: %s seconds ---" % (time.time() - start_time))
+        
+        # Check model size
+        model_size = os.path.getsize("./Models/weights/forest_fire_cnn.h5")
+        print("--- CNN Model size: %s MB ---" % (model_size / (1024 * 1024)))
+        
+        # check CPU usage
+        cpu_usage = psutil.cpu_percent()
+        print(f"CPU usage: {cpu_usage}%")
+
+        # check memory usage
+        memory_usage = psutil.virtual_memory().percent
+        print(f"Memory usage: {memory_usage}%")
+       
         # Assign Label
         class_label = class_labels[class_idx]
         return render_template("index.html", prediction = class_label, img = image_path, listOfModels = listOfModels, modelToUse = modelToUse)

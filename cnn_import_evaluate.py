@@ -14,8 +14,9 @@ def CNN_import_model(model, path):
 
 
 def CNN_evaluate(model, dataset):
-    model.evaluate(x=dataset)
-
+    evaluation_metrics = model.evaluate(x=dataset)
+    print(f'Loss: {evaluation_metrics[0]}')
+    print(f'Accuracy: {evaluation_metrics[1]}')
 
 def main():
     # setup
