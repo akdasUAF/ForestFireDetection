@@ -105,7 +105,7 @@ unetModel = create_unet_model(image_size + (3, ))
 unetModel = import_unet_model(unetModel, f'Models/weights/forest_fire_unet_254x254_adam_ssim_5.h5')
 
 # Importing yolo
-yoloModel = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5/runs/train/exp9/weights/best.pt', force_reload=True)
+yoloModel = torch.hub.load('ultralytics/yolov5', 'custom', path='Models/weights/best.pt', force_reload=True)
 
 listOfModels = [{'name': 'CNN 99%', 'model' : cnnModel}, 
                 {'name': 'Autoencoder', 'model' : aeModel}, 

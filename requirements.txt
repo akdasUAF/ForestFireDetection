@@ -6,3 +6,6 @@ torch
 numpy
 scikit-learn
 joblib
+pyyaml
+tqdm
+ultralytics
