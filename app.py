@@ -93,7 +93,7 @@ def yoloPredict(image):
 
 # Creating and importing CNN
 cnnModel = CNN_create_model(image_size + (3, ))
-cnnModel = CNN_import_model(cnnModel, f'Models/weights/forest_fire_cnn.h5')
+cnnModel = CNN_import_model(cnnModel, f'Models/weights/cnn_m2.h5')
 
 # Creating and importing Autoencoder
 aeModel = create_ae_model(image_size + (3, ))
@@ -144,7 +144,7 @@ def predict():
         print("--- CNN Detect Inference time: %s seconds ---" % (time.time() - start_time))
         
         # Check model size
-        model_size = os.path.getsize("./Models/weights/forest_fire_cnn.h5")
+        model_size = os.path.getsize("./Models/weights/cnn_m2.h5")
         print("--- CNN Model size: %s MB ---" % (model_size / (1024 * 1024)))
         
         # check CPU usage
@@ -182,4 +182,4 @@ def predict():
         return render_template("index.html", prediction = class_label, img = yolo_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port = 8000, debug = True)
+    app.run(host="0.0.0.0", port = 8001, debug = True)

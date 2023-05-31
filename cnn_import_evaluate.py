@@ -25,7 +25,7 @@ def main():
     model = cct.CNN_create_model(image_size + (3, ))
 
     # import
-    model = CNN_import_model(model, './Models/weights/forest_fire_cnn.h5')
+    model = CNN_import_model(model, './Models/weights/cnn_m2.h5')
 
     # evaluate
     print("Performance on Training Data:")
