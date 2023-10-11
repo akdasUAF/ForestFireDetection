@@ -53,7 +53,8 @@ def CNN_create_model(input_shape):
     model.add(MaxPooling2D(pool_size=(4,4)))
     model.add(Conv2D(5, 4, input_shape=input_shape))
     model.add(MaxPooling2D(pool_size=(3,3)))
-
+    model.add(Conv2D(2, 3, input_shape=input_shape))
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
     model.add(Dense(100, activation=tf.nn.relu))
     model.add(Dense(50, activation=tf.nn.relu))
@@ -90,7 +91,7 @@ def main():
     cie.CNN_evaluate(model, test_ds)
 
     # save
-    model.save('./Models/weights/cnn_m2.h5')
+    model.save('./Models/weights/forest_fire_cnn.h5')
 
     return 0
 
