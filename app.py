@@ -98,7 +98,7 @@ aeModel = create_ae_model(image_size + (3, ))
 aeModel = import_ae_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_5.h5')
 
 # Creating and importing Deep Belief Network
-dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
+dbModel = DBN_import_model('Models/weights/dbn_1_RBM.joblib')
 
 # Creating and importing U-Net
 unetModel = create_unet_model(image_size + (3, ))
@@ -164,4 +164,4 @@ def predict():
         return render_template("index.html", prediction = class_label, img = yolo_image_path, listOfModels = listOfModels, modelToUse = modelToUse)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port = 8001, debug = True)
+    app.run(host="0.0.0.0", port = 8000, debug = True)
