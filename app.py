@@ -98,7 +98,7 @@ aeModel = create_ae_model(image_size + (3, ))
 aeModel = import_ae_model(aeModel, f'Models/weights/forest_fire_ae_254x254_adam_ssim_5.h5')
 
 # Creating and importing Deep Belief Network
-dbModel = DBN_import_model('Models/weights/dbn_2RBM.joblib')
+dbModel = DBN_import_model('Models/weights/dbn_pipeline_model.joblib')
 
 # Creating and importing U-Net
 unetModel = create_unet_model(image_size + (3, ))
