@@ -1,7 +1,7 @@
 # Forest Fire Detection
 
 The aim of this project is to create neural network models for forest Fire detection using Flask and TensorFlow, and integrate them into a website for convenient use.
-> Note: This code is not optimized for production enviroment.
+> Note: This code is not optimized for production environment.
 
 For documentation of the code in this repository, please see the Wiki. See below for instructions to install and run the web server.
 
@@ -27,7 +27,7 @@ Then, move `dbn_pipeline_model.joblib.gz` to the `Models/weights` directory insi
 
 `gunzip dbn_pipeline_model.joblib.gz`
 
-# How to install dependecies
+# How to install dependencies
 
 `pip install -r requirements.txt`
 
@@ -48,6 +48,6 @@ To run the web server, just do:
 
 `python3 app.py`
 
-If you want it to run persistantly (staying up after you close your terminal connection) do:
+If you want it to run persistently (staying up after you close your terminal connection) do:
 
 `nohup python3 app.py &`
