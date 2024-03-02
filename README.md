@@ -1,3 +1,8 @@
+# Our Publication
+Lint to the Paper: https://digitalcommons.kennesaw.edu/cgi/viewcontent.cgi?article=1051&context=thegeographicalbulletin
+Citation: Wang, Yali, et al. "Toward Energy-Efficient Deep Neural Networks for Forest Fire Detection in an Image." The Geographical Bulletin 64.2 (2023): 13.
+Citation BibTex: @article{wang2023toward, title={Toward Energy-Efficient Deep Neural Networks for Forest Fire Detection in an Image}, author={Wang, Yali and Purev, Chuulabat and Barndt, Hunter and Toal, Henry and Kim, Jason and Underwood, Luke and Avalo, Luis and Das, Arghya Kusum}, journal={The Geographical Bulletin}, volume={64}, number={2}, pages={13}, year={2023} }
+
 # Forest Fire Detection
 
 The aim of this project is to create neural network models for forest Fire detection using Flask and TensorFlow, and integrate them into a website for convenient use.
