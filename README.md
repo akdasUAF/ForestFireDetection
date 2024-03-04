@@ -30,9 +30,7 @@ gunzip dataset.tar.gz
 tar -xf yolov5.tar
 tar -xf dataset.tar
 ```
-Then, move `dbn_pipeline_model.joblib.gz` to the `Models/weights` directory inside of the repo, and extract with
-
-`gunzip dbn_pipeline_model.joblib.gz`
+The `dbn_pipeline_model.joblib` has already been extracted to the `Models/weights` directory inside of the repo for use.
 
 # How to install dependecies
 
