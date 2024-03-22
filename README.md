@@ -23,14 +23,17 @@ For documentation of the code in this repository, please see the Wiki. See below
 
 If you do not have access to the repository from your command line, but your github account does have access, then follow the instructions at [this link](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to set up ssh keys to provide access. Then, run the `git clone` command again.
 
-Then, download the three files in [this google drive folder](https://drive.google.com/drive/folders/1cynEIPhHWGcqiry9HhxzSawa3L7VXbTz?usp=drive_link) (these are too large for github to accept, and one contains another git repo). Move `yolov5.tar.gz` and `dataset.tar.gz` into the repo directory and extract them using
+Then, download all the files in [this google drive folder](https://drive.google.com/drive/folders/1cynEIPhHWGcqiry9HhxzSawa3L7VXbTz?usp=drive_link) (these are too large for github to accept, and one contains another git repo). Move `yolov5.tar.gz` and `dataset.tar.gz` into the repo directory and extract them using
 ```
 gunzip yolov5.tar.gz
 gunzip dataset.tar.gz
 tar -xf yolov5.tar
 tar -xf dataset.tar
 ```
-The `dbn_pipeline_model.joblib` has already been extracted to the `Models/weights` directory inside of the repo for use.
+Updates on 3/21/2024:
+
+Move the downloaded DBN models `dbn_pipeline_model.joblib`, `dbn_1_RBM.joblib`, and `dbn_2RBM.joblib` to the `Models/weights` directory to replace the original ones.
+This is because of the limited bandwidth of GitHub LFS service.
 
 # How to install dependecies
 
